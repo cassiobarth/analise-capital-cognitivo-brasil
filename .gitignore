@@ -1,0 +1,14 @@
+# Ignorar ambiente virtual
+venv/
+env/
+.env
+
+# Ignorar arquivos compilados do Python
+__pycache__/
+*.pyc
+
+# Ignorar dados BRUTOS gigantes (se criarmos essa pasta depois)
+dados_brutos/
+
+# Ignorar configurações do editor
+.vscode/
