@@ -1,0 +1,828 @@
+﻿Municipio;UF;Abrangencia;Pop_Total;Pop_Esgoto_Atendida;Indice_Esgoto_Pct
+Rio Branco;AC;Local;364756.0;75383.0;2067.0
+Cajueiro;AL;Local;16359.0;2199.0;1344.0
+Campo Alegre;AL;Local;32106.0;3999.0;1246.0
+Coruripe;AL;Local;50414.0;13942.0;2766.0
+Maceió;AL;Microrregional;1300609.0;239925.0;1845.0
+Maceió;AL;Regional;2507502.0;79320.0;316.0
+Penedo;AL;Microrregional;709923.0;54477.0;767.0
+Roteiro;AL;Local;6474.0;5678.0;877.0
+Santana do Mundaú;AL;Local;11323.0;3783.0;3341.0
+São Miguel dos Campos;AL;Local;51990.0;0.0;0.0
+Teotônio Vilela;AL;Local;38053.0;28660.0;7532.0
+União dos Palmares;AL;Microrregional;383109.0;64795.0;1691.0
+União dos Palmares;AL;Local;59280.0;9258.0;1562.0
+Anori;AM;Local;17194.0;3000.0;1745.0
+Caapiranga;AM;Local;13469.0;320.0;238.0
+Guajará;AM;Local;13815.0;1018.0;737.0
+Ipixuna;AM;Local;24311.0;130.0;53.0
+Manaus;AM;Local;2063689.0;538324.0;2609.0
+Maués;AM;Local;61204.0;12800.0;2091.0
+Presidente Figueiredo;AM;Local;30668.0;5000.0;163.0
+Macapá;AP;Microrregional;733759.0;37044.0;505.0
+Macapá;AP;Regional;733759.0;2464.0;34.0
+Abaíra;BA;Local;7301.0;7290.0;9985.0
+Alagoinhas;BA;Local;151055.0;58737.0;3888.0
+Barra;BA;Local;51092.0;23000.0;4502.0
+Barra da Estiva;BA;Local;26026.0;12783.0;4912.0
+Bom Jesus da Lapa;BA;Local;65550.0;22083.0;3369.0
+Carinhanha;BA;Local;28869.0;12802.0;4435.0
+Casa Nova;BA;Local;72086.0;32500.0;4509.0
+Curaçá;BA;Local;34180.0;10359.0;3031.0
+Igaporã;BA;Local;15527.0;8205.0;5284.0
+Itabuna;BA;Local;186708.0;176211.0;9438.0
+Itajuípe;BA;Local;18781.0;18781.0;1000.0
+Itapetinga;BA;Local;65897.0;63969.0;9707.0
+Itororó;BA;Local;16617.0;16105.0;9692.0
+Jaborandi;BA;Local;9275.0;2628.0;2833.0
+Jacobina;BA;Microrregional;298950.0;5033.0;168.0
+Juazeiro;BA;Local;237821.0;200829.0;8445.0
+Macarani;BA;Local;21599.0;19180.0;888.0
+Macaúbas;BA;Local;41859.0;13000.0;3106.0
+Mucugê;BA;Local;12137.0;5148.0;4242.0
+Piatã;BA;Local;20086.0;1902.0;947.0
+Remanso;BA;Local;40586.0;14650.0;361.0
+Rodelas;BA;Local;10308.0;9700.0;941.0
+Salvador;BA;Regional;12361989.0;4442401.0;3594.0
+Santa Maria da Vitória;BA;Local;38604.0;14420.0;3735.0
+Santa Rita de Cássia;BA;Local;27390.0;3800.0;1387.0
+Sento Sé;BA;Local;38154.0;4895.0;1283.0
+Sobradinho;BA;Local;25475.0;21400.0;840.0
+Taperoá;BA;Local;18044.0;7200.0;399.0
+Urandi;BA;Local;15355.0;5500.0;3582.0
+Valença;BA;Local;85655.0;62528.0;730.0
+Xique-Xique;BA;Local;44757.0;3500.0;782.0
+Boa Viagem;CE;Local;50411.0;21542.0;4273.0
+Brejo Santo;CE;Local;51090.0;23846.0;4667.0
+Camocim;CE;Local;62326.0;24157.0;3876.0
+Canindé;CE;Local;74174.0;15873.0;214.0
+Crato;CE;Local;131050.0;0.0;0.0
+Fortaleza;CE;Regional;7492385.0;2104968.0;2809.0
+Granja;CE;Local;53344.0;3000.0;562.0
+Icó;CE;Local;62642.0;13760.0;2197.0
+Iguatu;CE;Local;98064.0;16404.0;1673.0
+Itapajé;CE;Local;46426.0;37574.0;8093.0
+Jaguaribe;CE;Local;33726.0;16282.0;4828.0
+Jardim;CE;Local;27411.0;9195.0;3354.0
+Jucás;CE;Local;23922.0;5582.0;2333.0
+Limoeiro do Norte;CE;Local;59560.0;16857.0;283.0
+Milhã;CE;Local;14123.0;3000.0;2124.0
+Morada Nova;CE;Local;61443.0;1400.0;228.0
+Nova Russas;CE;Local;30699.0;9422.0;3069.0
+Quixadá;CE;Microrregional;670430.0;867.0;13.0
+Quixelô;CE;Local;15910.0;4610.0;2898.0
+Sobral;CE;Local;203023.0;138090.0;6802.0
+Brasília;DF;Regional;2817381.0;2600435.0;923.0
+Alegre;ES;Local;29177.0;18456.0;6326.0
+Alfredo Chaves;ES;Local;13836.0;11825.0;8547.0
+Aracruz;ES;Local;94765.0;66615.0;7029.0
+Baixo Guandu;ES;Local;30674.0;30600.0;9976.0
+Cachoeiro de Itapemirim;ES;Local;185786.0;185784.0;1000.0
+Colatina;ES;Local;120033.0;105593.0;8797.0
+Governador Lindenberg;ES;Local;11009.0;3257.0;2958.0
+Guaçuí;ES;Local;29358.0;27189.0;9261.0
+Ibiraçu;ES;Local;11723.0;8842.0;7542.0
+Ibitirama;ES;Local;9520.0;5446.0;5721.0
+Iconha;ES;Local;12326.0;7143.0;5795.0
+Itaguaçu;ES;Local;13589.0;8712.0;6411.0
+Itapemirim;ES;Microrregional;81761.0;34278.0;4192.0
+Itarana;ES;Local;10597.0;5376.0;5073.0
+Jaguaré;ES;Local;28931.0;16812.0;5811.0
+Jerônimo Monteiro;ES;Local;11575.0;9622.0;8313.0
+João Neiva;ES;Local;14079.0;13805.0;9805.0
+Linhares;ES;Local;166786.0;148223.0;8887.0
+Marilândia;ES;Local;12387.0;9000.0;7266.0
+Mimoso do Sul;ES;Local;24475.0;11860.0;4846.0
+Rio Bananal;ES;Local;19274.0;6442.0;3342.0
+São Domingos do Norte;ES;Local;8589.0;3100.0;3609.0
+São Mateus;ES;Local;123752.0;73592.0;5947.0
+Sooretama;ES;Local;26502.0;19288.0;7278.0
+Vargem Alta;ES;Local;19563.0;4716.0;2411.0
+Vitória;ES;Regional;2818410.0;1355256.0;4809.0
+Abadiânia;GO;Local;17232.0;14115.0;8191.0
+Buriti Alegre;GO;Local;10495.0;1492.0;1422.0
+Caldas Novas;GO;Local;98622.0;54168.0;5492.0
+Catalão;GO;Local;114427.0;72439.0;6331.0
+Chapadão do Céu;GO;Local;12870.0;12870.0;1000.0
+Goiânia;GO;Regional;6507266.0;4171538.0;6411.0
+Mineiros;GO;Local;70081.0;70073.0;9999.0
+Paranaiguara;GO;Local;7607.0;7607.0;1000.0
+Rio Quente;GO;Local;3864.0;1153.0;2984.0
+São Simão;GO;Local;17020.0;15775.0;9269.0
+Senador Canedo;GO;Local;155635.0;4501.0;289.0
+Açailândia;MA;Local;106550.0;1581.0;148.0
+Bacabal;MA;Local;103711.0;4830.0;466.0
+Balsas;MA;Local;101767.0;4000.0;393.0
+Buritirana;MA;Local;12918.0;144.0;111.0
+Caxias;MA;Local;156973.0;12000.0;764.0
+Codó;MA;Local;114275.0;11379.0;996.0
+Estreito;MA;Local;33294.0;1000.0;30.0
+Paço do Lumiar;MA;Local;145643.0;52084.0;3576.0
+Porto Franco;MA;Local;23903.0;1548.0;648.0
+Presidente Médici;MA;Local;4696.0;150.0;319.0
+São José de Ribamar;MA;Local;244579.0;19572.0;80.0
+São Luís;MA;Regional;4565081.0;658031.0;1441.0
+Timon;MA;Local;174465.0;58009.0;3325.0
+Abre Campo;MG;Local;13927.0;13882.0;9968.0
+Acaiaca;MG;Local;3909.0;2553.0;6531.0
+Aguanil;MG;Local;4357.0;2650.0;6082.0
+Aimorés;MG;Local;25269.0;22893.0;906.0
+Aiuruoca;MG;Local;6233.0;4641.0;7446.0
+Albertina;MG;Local;2952.0;2031.0;688.0
+Alto Caparaó;MG;Local;5795.0;4428.0;7641.0
+Araguari;MG;Local;117808.0;117808.0;1000.0
+Araporã;MG;Local;8479.0;8479.0;1000.0
+Arapuá;MG;Local;2631.0;1972.0;7495.0
+Araújos;MG;Local;9199.0;7897.0;8585.0
+Argirita;MG;Local;2688.0;2688.0;1000.0
+Bandeira do Sul;MG;Local;5943.0;5808.0;9773.0
+Barbacena;MG;Local;125317.0;81493.0;6503.0
+Belo Horizonte;MG;Regional;14352190.0;8292229.0;5778.0
+Bias Fortes;MG;Local;3361.0;3056.0;9093.0
+Boa Esperança;MG;Local;39848.0;34317.0;8612.0
+Bocaina de Minas;MG;Local;5348.0;4100.0;7666.0
+Bocaiúva;MG;Local;48032.0;39424.0;8208.0
+Bom Sucesso;MG;Local;17151.0;14510.0;846.0
+Cachoeira da Prata;MG;Local;3693.0;3409.0;9231.0
+Cachoeira Dourada;MG;Local;2315.0;2030.0;8769.0
+Caeté;MG;Local;38776.0;38776.0;1000.0
+Cambuí;MG;Local;29536.0;29536.0;1000.0
+Campo Belo;MG;Local;52277.0;49756.0;9518.0
+Campo do Meio;MG;Local;11377.0;11268.0;9904.0
+Capitão Andrade;MG;Local;4585.0;4483.0;9778.0
+Caranaíba;MG;Local;2933.0;1050.0;358.0
+Carangola;MG;Local;31240.0;19960.0;6389.0
+Carmésia;MG;Local;2605.0;565.0;2169.0
+Carmo da Mata;MG;Local;11019.0;9070.0;8231.0
+Carmo de Minas;MG;Local;13797.0;13286.0;963.0
+Carmo do Cajuru;MG;Local;23479.0;17683.0;7531.0
+Carmópolis de Minas;MG;Local;18003.0;17596.0;9774.0
+Catas Altas;MG;Local;5473.0;4806.0;8781.0
+Chalé;MG;Local;6075.0;3367.0;5542.0
+Chiador;MG;Local;2800.0;1461.0;5218.0
+Claraval;MG;Local;4658.0;1500.0;322.0
+Conceição das Alagoas;MG;Local;28381.0;25110.0;8847.0
+Conceição das Pedras;MG;Local;2772.0;2700.0;974.0
+Conceição de Ipanema;MG;Local;4409.0;3520.0;7984.0
+Congonhas do Norte;MG;Local;4831.0;3501.0;7247.0
+Conselheiro Pena;MG;Local;20824.0;17580.0;8442.0
+Consolação;MG;Local;1563.0;1001.0;6404.0
+Coqueiral;MG;Local;9023.0;7545.0;8362.0
+Coronel Pacheco;MG;Local;2762.0;1943.0;7035.0
+Córrego do Bom Jesus;MG;Local;4272.0;1006.0;2355.0
+Córrego Fundo;MG;Local;6133.0;4116.0;6711.0
+Cristina;MG;Local;10374.0;10100.0;9736.0
+Datas;MG;Local;5465.0;3943.0;7215.0
+Delfim Moreira;MG;Local;7952.0;7820.0;9834.0
+Delta;MG;Local;10494.0;9852.0;9388.0
+Desterro de Entre Rios;MG;Local;7653.0;3910.0;5109.0
+Diogo de Vasconcelos;MG;Local;3549.0;1487.0;419.0
+Divinolândia de Minas;MG;Local;6516.0;5200.0;798.0
+Dom Bosco;MG;Local;3697.0;1200.0;3246.0
+Dom Viçoso;MG;Local;3095.0;2110.0;6817.0
+Dores de Campos;MG;Local;10007.0;9359.0;9352.0
+Doresópolis;MG;Local;1461.0;1200.0;8214.0
+Douradoquara;MG;Local;1829.0;1779.0;9727.0
+Elói Mendes;MG;Local;26336.0;20374.0;7736.0
+Fervedouro;MG;Local;10445.0;4811.0;4606.0
+Formiga;MG;Local;68248.0;60147.0;8813.0
+Fortuna de Minas;MG;Local;3093.0;3093.0;1000.0
+Francisco Sá;MG;Local;23476.0;14897.0;6346.0
+Frei Lagonegro;MG;Local;3391.0;800.0;2359.0
+Goiabeira;MG;Local;2830.0;2816.0;9951.0
+Gonzaga;MG;Local;5230.0;4000.0;7648.0
+Governador Valadares;MG;Local;257171.0;248885.0;9678.0
+Guanhães;MG;Local;32244.0;25779.0;7995.0
+Guapé;MG;Local;13772.0;13772.0;1000.0
+Guarani;MG;Local;7714.0;5932.0;769.0
+Ibiá;MG;Local;22229.0;18606.0;837.0
+Ibituruna;MG;Local;2698.0;2464.0;9133.0
+Iguatama;MG;Local;6826.0;5080.0;7442.0
+Inhaúma;MG;Local;6239.0;1536.0;2462.0
+Ipanema;MG;Local;19522.0;19522.0;1000.0
+Ipiaçu;MG;Local;3775.0;3715.0;9841.0
+Itabira;MG;Local;113343.0;102197.0;9017.0
+Itabirito;MG;Local;53365.0;46629.0;8738.0
+Itaguara;MG;Local;13846.0;13454.0;9717.0
+Itambacuri;MG;Local;21042.0;10000.0;4752.0
+Itambé do Mato Dentro;MG;Local;2142.0;1000.0;4669.0
+Itanhandu;MG;Local;15236.0;14900.0;9779.0
+Itaúna;MG;Local;97669.0;93116.0;9534.0
+Ituiutaba;MG;Local;102217.0;93353.0;9133.0
+Jacutinga;MG;Local;25525.0;25525.0;1000.0
+Jaguaraçu;MG;Local;3092.0;2238.0;7238.0
+Japaraíba;MG;Local;4506.0;2865.0;6358.0
+Jeceaba;MG;Local;6197.0;3156.0;5093.0
+Jequeri;MG;Local;12419.0;7050.0;5677.0
+Jesuânia;MG;Local;5138.0;3102.0;6037.0
+Joanésia;MG;Local;4329.0;2562.0;5918.0
+João Monlevade;MG;Local;80187.0;80187.0;1000.0
+Juiz de Fora;MG;Local;540756.0;510954.0;9449.0
+Lagoa da Prata;MG;Local;51412.0;47794.0;9296.0
+Lagoa Formosa;MG;Local;18904.0;18168.0;9611.0
+Lajinha;MG;Local;20835.0;10117.0;4856.0
+Lambari;MG;Local;20414.0;14998.0;7347.0
+Lima Duarte;MG;Local;17221.0;15963.0;9269.0
+Luisburgo;MG;Local;6956.0;2060.0;2961.0
+Luminárias;MG;Local;5586.0;4292.0;7683.0
+Machado;MG;Local;37684.0;29097.0;7721.0
+Mamonas;MG;Local;5997.0;419.0;699.0
+Manhuaçu;MG;Local;91886.0;88787.0;9663.0
+Manhumirim;MG;Local;20613.0;17485.0;8483.0
+Mantena;MG;Local;26535.0;20663.0;7787.0
+Mariana;MG;Local;61387.0;55248.0;900.0
+Marliéria;MG;Local;4592.0;2866.0;6241.0
+Marmelópolis;MG;Local;3200.0;1900.0;5937.0
+Mesquita;MG;Local;5040.0;3750.0;744.0
+Moema;MG;Local;7548.0;6078.0;8052.0
+Monte Alegre de Minas;MG;Local;20170.0;14791.0;7333.0
+Monte Carmelo;MG;Local;47692.0;47267.0;9911.0
+Muriaé;MG;Local;104108.0;95893.0;9211.0
+Nepomuceno;MG;Local;25018.0;19267.0;7701.0
+Nova Era;MG;Local;17438.0;16472.0;9446.0
+Nova Ponte;MG;Local;14598.0;13495.0;9244.0
+Nova Serrana;MG;Local;105552.0;442.0;42.0
+Olaria;MG;Local;1945.0;1936.0;9954.0
+Olímpio Noronha;MG;Local;2555.0;2269.0;8881.0
+Oliveira;MG;Local;39262.0;39256.0;9998.0
+Ouro Fino;MG;Local;32094.0;32094.0;1000.0
+Ouro Preto;MG;Local;74821.0;41450.0;554.0
+Pains;MG;Local;8142.0;5618.0;690.0
+Papagaios;MG;Local;13920.0;11541.0;8291.0
+Pará de Minas;MG;Local;97139.0;96632.0;9948.0
+Paraguaçu;MG;Local;21723.0;17779.0;8184.0
+Paraisópolis;MG;Local;20445.0;20445.0;1000.0
+Passa Quatro;MG;Local;15515.0;15387.0;9917.0
+Passos;MG;Local;111939.0;103813.0;9274.0
+Patrocínio;MG;Local;89826.0;89377.0;995.0
+Pedra Bonita;MG;Local;7320.0;1982.0;2708.0
+Pedra Dourada;MG;Local;2757.0;1520.0;5513.0
+Pedro Teixeira;MG;Local;1810.0;1200.0;663.0
+Pequi;MG;Local;4155.0;2570.0;6185.0
+Pimenta;MG;Local;8563.0;6900.0;8058.0
+Piracema;MG;Local;6700.0;2700.0;403.0
+Pirapora;MG;Local;55606.0;26815.0;4822.0
+Piumhi;MG;Local;36062.0;36062.0;1000.0
+Poços de Caldas;MG;Local;163742.0;163742.0;1000.0
+Pocrane;MG;Local;8350.0;5200.0;6228.0
+Ponte Nova;MG;Local;57776.0;57776.0;1000.0
+Pratápolis;MG;Local;8406.0;7400.0;8803.0
+Pratinha;MG;Local;3559.0;2100.0;5901.0
+Presidente Kubitschek;MG;Local;3071.0;2764.0;900.0
+Queluzito;MG;Local;1770.0;995.0;5621.0
+Raul Soares;MG;Local;23423.0;17278.0;7377.0
+Recreio;MG;Local;11007.0;9266.0;8418.0
+Reduto;MG;Local;7848.0;4900.0;6244.0
+Rio Acima;MG;Local;10261.0;8880.0;8654.0
+Rio Doce;MG;Local;2484.0;2385.0;9601.0
+Rochedo de Minas;MG;Local;2291.0;2100.0;9166.0
+Sabinópolis;MG;Local;14240.0;5113.0;3591.0
+Sacramento;MG;Local;26670.0;25888.0;9707.0
+Santa Bárbara;MG;Local;30466.0;3573.0;1173.0
+Santa Cruz de Minas;MG;Local;8109.0;8109.0;1000.0
+Santana do Garambéu;MG;Local;2137.0;1582.0;7403.0
+Santana dos Montes;MG;Local;3469.0;3000.0;8648.0
+Santa Rita de Jacutinga;MG;Local;4755.0;3890.0;8181.0
+Santo Antônio do Amparo;MG;Local;17285.0;16723.0;9675.0
+São Francisco do Glória;MG;Local;4800.0;2175.0;4531.0
+São Geraldo da Piedade;MG;Local;3305.0;1200.0;3631.0
+São Geraldo do Baixio;MG;Local;3143.0;2850.0;9068.0
+São Gonçalo do Rio Abaixo;MG;Local;11850.0;11114.0;9379.0
+São João Batista do Glória;MG;Local;7652.0;6486.0;8476.0
+São João da Mata;MG;Local;2914.0;2701.0;9269.0
+São João del Rei;MG;Local;90225.0;78581.0;8709.0
+São João do Manteninha;MG;Local;5331.0;5329.0;9996.0
+São José da Varginha;MG;Local;4536.0;1728.0;381.0
+São Lourenço;MG;Local;44798.0;41099.0;9174.0
+São Sebastião do Rio Verde;MG;Local;2300.0;2259.0;9822.0
+Senador Cortes;MG;Local;2240.0;1430.0;6384.0
+Senador Firmino;MG;Local;7716.0;4575.0;5929.0
+Senador José Bento;MG;Local;2068.0;757.0;3661.0
+Senhora de Oliveira;MG;Local;5483.0;3315.0;6046.0
+Senhora dos Remédios;MG;Local;10384.0;4697.0;4523.0
+Seritinga;MG;Local;1819.0;1540.0;8466.0
+Sete Lagoas;MG;Local;227397.0;220539.0;9698.0
+Silvianópolis;MG;Local;6179.0;3769.0;610.0
+Simão Pereira;MG;Local;2947.0;2615.0;8873.0
+Soledade de Minas;MG;Local;5613.0;4125.0;7349.0
+Teófilo Otoni;MG;Regional;1076551.0;115960.0;1077.0
+Tocantins;MG;Local;16185.0;14912.0;9213.0
+Tombos;MG;Local;8609.0;6257.0;7268.0
+Três Pontas;MG;Local;55255.0;55038.0;9961.0
+Tupaciguara;MG;Local;25470.0;25466.0;9998.0
+Uberaba;MG;Local;337836.0;332779.0;985.0
+Uberlândia;MG;Local;713224.0;702597.0;9851.0
+Unaí;MG;Local;86619.0;62817.0;7252.0
+Uruana de Minas;MG;Local;3282.0;1327.0;4043.0
+Vermelho Novo;MG;Local;4899.0;1911.0;3901.0
+Viçosa;MG;Local;76430.0;70649.0;9244.0
+Bela Vista;MS;Local;21613.0;7956.0;3681.0
+Campo Grande;MS;Regional;1719681.0;762074.0;4431.0
+Campo Grande;MS;Local;898100.0;774562.0;8624.0
+Cassilândia;MS;Local;20988.0;3900.0;1858.0
+Corguinho;MS;Local;4783.0;1300.0;2718.0
+Costa Rica;MS;Local;26037.0;18381.0;706.0
+Glória de Dourados;MS;Local;10444.0;2000.0;1915.0
+São Gabriel do Oeste;MS;Local;29579.0;29579.0;1000.0
+Água Boa;MT;Local;29219.0;450.0;154.0
+Alta Floresta;MT;Local;58613.0;23609.0;4028.0
+Alto Araguaia;MT;Local;17193.0;980.0;57.0
+Aripuanã;MT;Local;24626.0;450.0;183.0
+Barra do Bugres;MT;Local;29403.0;7236.0;2461.0
+Barra do Garças;MT;Local;69210.0;50248.0;726.0
+Cáceres;MT;Local;89681.0;7290.0;813.0
+Campo Verde;MT;Local;44585.0;32587.0;7309.0
+Canabrava do Norte;MT;Local;4485.0;3500.0;7804.0
+Cláudia;MT;Local;9593.0;8551.0;8914.0
+Colíder;MT;Local;31370.0;15017.0;4787.0
+Confresa;MT;Local;35075.0;12329.0;3515.0
+Cuiabá;MT;Local;650877.0;490314.0;7533.0
+Diamantino;MT;Local;21941.0;9600.0;4375.0
+Dom Aquino;MT;Local;7872.0;272.0;346.0
+Guarantã do Norte;MT;Local;31024.0;8889.0;2865.0
+Jauru;MT;Local;8367.0;4228.0;5053.0
+Juara;MT;Local;34906.0;15100.0;4326.0
+Juína;MT;Local;45869.0;2096.0;457.0
+Juscimeira;MT;Local;11480.0;702.0;611.0
+Lucas do Rio Verde;MT;Local;83798.0;35760.0;4267.0
+Matupá;MT;Local;20091.0;11602.0;5775.0
+Mirassol D Oeste;MT;Local;26785.0;6510.0;243.0
+Nova Xavantina;MT;Microrregional;31264.0;19065.0;6098.0
+Pedra Preta;MT;Local;18066.0;8729.0;4832.0
+Peixoto de Azevedo;MT;Local;32714.0;16588.0;5071.0
+Pontes e Lacerda;MT;Local;52018.0;32607.0;6268.0
+Porto Esperidião;MT;Local;10204.0;3371.0;3304.0
+Primavera do Leste;MT;Local;85146.0;68362.0;8029.0
+Ribeirãozinho;MT;Local;2593.0;1755.0;6768.0
+Rondonópolis;MT;Local;244911.0;244911.0;1000.0
+Santo Afonso;MT;Local;2519.0;350.0;1389.0
+São José dos Quatro Marcos;MT;Local;17849.0;2309.0;1294.0
+Sinop;MT;Local;196312.0;98720.0;5029.0
+Sorriso;MT;Local;110635.0;60710.0;5487.0
+Tangará da Serra;MT;Local;106434.0;25472.0;2393.0
+Vale de São Domingos;MT;Local;2904.0;1396.0;4807.0
+Várzea Grande;MT;Local;300078.0;87234.0;2907.0
+Vila Bela da Santíssima Trindade;MT;Local;16774.0;2122.0;1265.0
+Altamira;PA;Local;126279.0;60189.0;4766.0
+Barcarena;PA;Local;126650.0;26443.0;2088.0
+Belém;PA;Regional;4792510.0;307118.0;641.0
+Breu Branco;PA;Local;45712.0;900.0;197.0
+Canaã dos Carajás;PA;Local;77079.0;27200.0;3529.0
+Cumaru do Norte;PA;Local;14036.0;1200.0;855.0
+Dom Eliseu;PA;Local;58484.0;330.0;56.0
+Floresta do Araguaia;PA;Local;17898.0;17000.0;9498.0
+Goianésia do Pará;PA;Local;26362.0;1200.0;455.0
+Paragominas;PA;Local;105550.0;12589.0;1193.0
+Parauapebas;PA;Local;267836.0;32884.0;1228.0
+Redenção;PA;Microrregional;149679.0;4391.0;293.0
+Santa Bárbara do Pará;PA;Local;21087.0;130.0;62.0
+Santo Antônio do Tauá;PA;Local;27461.0;27461.0;1000.0
+Ulianópolis;PA;Local;37972.0;1110.0;292.0
+Vitória do Xingu;PA;Local;15607.0;5200.0;3332.0
+Borborema;PB;Local;4214.0;300.0;712.0
+João Pessoa;PB;Regional;3767040.0;1287609.0;3418.0
+Santa Rita;PB;Local;149910.0;5964.0;398.0
+São Miguel de Taipu;PB;Local;7066.0;2126.0;3009.0
+São Sebastião do Umbuzeiro;PB;Local;3279.0;2126.0;6484.0
+Carnaubeira da Penha;PE;Local;12239.0;2057.0;1681.0
+Quipapá;PE;Local;17928.0;15200.0;8478.0
+Recife;PE;Regional;8787018.0;2124551.0;2418.0
+Aroeiras do Itaim;PI;Local;2690.0;1400.0;5204.0
+Campo Grande do Piauí;PI;Local;6020.0;600.0;997.0
+Caridade do Piauí;PI;Local;5033.0;400.0;795.0
+Fartura do Piauí;PI;Local;5284.0;500.0;946.0
+João Costa;PI;Local;2970.0;1800.0;6061.0
+Madeiro;PI;Local;8032.0;3364.0;4188.0
+Oeiras;PI;Local;38161.0;15870.0;4159.0
+Olho d Água do Piauí;PI;Local;2637.0;15.0;57.0
+Porto Alegre do Piauí;PI;Local;2364.0;2342.0;9907.0
+São João da Fronteira;PI;Local;5522.0;154.0;279.0
+São Miguel da Baixa Grande;PI;Local;2269.0;1600.0;7052.0
+Teresina;PI;Local;866300.0;355725.0;4106.0
+Teresina;PI;Regional;2856415.0;202170.0;708.0
+Abatiá;PR;Local;7241.0;1350.0;1864.0
+Andirá;PR;Local;19878.0;11927.0;600.0
+Bandeirantes;PR;Local;31273.0;28009.0;8956.0
+Colorado;PR;Local;22896.0;18588.0;8118.0
+Curitiba;PR;Regional;10634217.0;8252555.0;776.0
+Doutor Ulysses;PR;Local;5697.0;882.0;1548.0
+Flórida;PR;Local;2652.0;2652.0;1000.0
+Ibiporã;PR;Local;51603.0;50709.0;9827.0
+Itambaracá;PR;Local;5908.0;4449.0;753.0
+Jaguapitã;PR;Local;15122.0;12800.0;8464.0
+Jaguariaíva;PR;Local;35141.0;30400.0;8651.0
+Japurá;PR;Local;9144.0;6425.0;7026.0
+Jataizinho;PR;Local;11813.0;10593.0;8967.0
+Jussara;PR;Local;6690.0;6690.0;1000.0
+Lobato;PR;Local;4601.0;4401.0;9565.0
+Marechal Cândido Rondon;PR;Local;55836.0;17765.0;3182.0
+Marialva;PR;Local;41851.0;26524.0;6338.0
+Mariluz;PR;Local;9847.0;4900.0;4976.0
+Paranaguá;PR;Local;145829.0;116791.0;8009.0
+Prado Ferreira;PR;Local;3709.0;3663.0;9876.0
+Presidente Castelo Branco;PR;Local;4336.0;3802.0;8768.0
+Ribeirão Claro;PR;Local;12364.0;8199.0;6631.0
+Santa Cecília do Pavão;PR;Local;3365.0;2113.0;6279.0
+Santa Isabel do Ivaí;PR;Local;8912.0;6957.0;7806.0
+São Jorge do Ivaí;PR;Local;5168.0;4500.0;8707.0
+Sarandi;PR;Local;118455.0;69332.0;5853.0
+Sertaneja;PR;Local;5616.0;2497.0;4446.0
+Sertanópolis;PR;Local;15930.0;13355.0;8384.0
+Tapejara;PR;Local;15869.0;13700.0;8633.0
+Terra Rica;PR;Local;14842.0;7740.0;5215.0
+Angra dos Reis;RJ;Local;167434.0;92080.0;5499.0
+Araruama;RJ;Microrregional;240582.0;175287.0;7286.0
+Barra do Piraí;RJ;Local;92883.0;79713.0;8582.0
+Barra Mansa;RJ;Local;169894.0;134889.0;794.0
+Cabo Frio;RJ;Microrregional;425102.0;331745.0;7804.0
+Campos dos Goytacazes;RJ;Local;483540.0;418929.0;8664.0
+Casimiro de Abreu;RJ;Local;46110.0;25452.0;552.0
+Comendador Levy Gasparian;RJ;Local;8741.0;8569.0;9803.0
+Conceição de Macabu;RJ;Local;21104.0;20814.0;9863.0
+Itatiaia;RJ;Local;30908.0;22654.0;7329.0
+Macaé;RJ;Local;246391.0;54999.0;2232.0
+Mendes;RJ;Local;17502.0;14681.0;8388.0
+Niterói;RJ;Local;481749.0;460070.0;955.0
+Nova Friburgo;RJ;Local;189939.0;160966.0;8475.0
+Paraíba do Sul;RJ;Local;42063.0;30261.0;7194.0
+Paraty;RJ;Local;45243.0;4600.0;1017.0
+Petrópolis;RJ;Local;278881.0;235906.0;8459.0
+Porto Real;RJ;Local;20373.0;18320.0;8992.0
+Quatis;RJ;Local;13682.0;12646.0;9243.0
+Resende;RJ;Local;129612.0;123429.0;9523.0
+Rio das Flores;RJ;Local;8954.0;5824.0;6504.0
+Rio das Ostras;RJ;Local;156491.0;4032.0;258.0
+Rio de Janeiro;RJ;Regional;13052828.0;0.0;0.0
+Rio de Janeiro;RJ;Microrregional;6860850.0;37808.0;55.0
+Rio de Janeiro;RJ;Microrregional;6267424.0;685962.0;1094.0
+Rio de Janeiro;RJ;Microrregional;9280013.0;3043349.0;3279.0
+Rio de Janeiro;RJ;Microrregional;8217024.0;972823.0;1184.0
+Três Rios;RJ;Local;78346.0;75614.0;9651.0
+Valença;RJ;Local;68088.0;20028.0;2941.0
+Volta Redonda;RJ;Local;261563.0;258711.0;9891.0
+Alexandria;RN;Local;13640.0;7100.0;5205.0
+Ceará-Mirim;RN;Local;79115.0;12954.0;1637.0
+Doutor Severiano;RN;Local;7044.0;2260.0;3208.0
+Natal;RN;Regional;3111892.0;831498.0;2672.0
+São Gonçalo do Amarante;RN;Local;115838.0;25892.0;2235.0
+Serra Negra do Norte;RN;Local;7597.0;5442.0;7163.0
+Touros;RN;Local;33035.0;3072.0;93.0
+Alvorada D Oeste;RO;Local;13117.0;6855.0;5226.0
+Ariquemes;RO;Local;96833.0;2455.0;254.0
+Cacoal;RO;Local;86887.0;54495.0;6272.0
+Pimenta Bueno;RO;Local;35079.0;2211.0;63.0
+Porto Velho;RO;Regional;1075519.0;52450.0;485.0
+Rolim de Moura;RO;Local;56406.0;1425.0;253.0
+Boa Vista;RR;Regional;636707.0;387036.0;6079.0
+Bagé;RS;Local;117938.0;75787.0;6426.0
+Candiota;RS;Local;10710.0;4060.0;3791.0
+Capão Bonito do Sul;RS;Local;1733.0;1100.0;6347.0
+Capitão;RS;Local;2921.0;363.0;1243.0
+Caxias do Sul;RS;Local;463501.0;431380.0;9307.0
+Cerro Grande;RS;Local;2379.0;796.0;3346.0
+Cruzaltense;RS;Local;1635.0;186.0;1138.0
+Doutor Ricardo;RS;Local;1888.0;150.0;794.0
+Hulha Negra;RS;Local;5976.0;1500.0;251.0
+Ivoti;RS;Local;22983.0;2400.0;1044.0
+Lajeado do Bugre;RS;Local;2601.0;250.0;961.0
+Lindolfo Collor;RS;Local;6248.0;40.0;64.0
+Maratá;RS;Local;2470.0;2455.0;9939.0
+Monte Alegre dos Campos;RS;Local;3180.0;160.0;503.0
+Muçum;RS;Local;4601.0;500.0;1087.0
+Nova Hartz;RS;Local;20088.0;1650.0;821.0
+Novo Cabrais;RS;Local;3568.0;930.0;2607.0
+Novo Hamburgo;RS;Local;227646.0;13870.0;609.0
+Pelotas;RS;Local;325685.0;223259.0;6855.0
+Pinhal;RS;Local;2959.0;576.0;1947.0
+Pinhal Grande;RS;Local;3805.0;3805.0;1000.0
+Porto Alegre;RS;Local;1332833.0;1222267.0;917.0
+Porto Alegre;RS;Regional;7299795.0;1317421.0;180.0
+Porto Vera Cruz;RS;Local;1560.0;1258.0;8064.0
+Quatro Irmãos;RS;Local;1552.0;935.0;6024.0
+Santana do Livramento;RS;Local;84421.0;33013.0;3911.0
+Santa Tereza;RS;Local;1505.0;242.0;1608.0
+São Gabriel;RS;Local;58487.0;31110.0;5319.0
+São João do Polêsine;RS;Local;2649.0;850.0;3209.0
+São Leopoldo;RS;Local;217409.0;37248.0;1713.0
+Tunas;RS;Local;3681.0;1153.0;3132.0
+Tupandi;RS;Local;5029.0;390.0;776.0
+Uruguaiana;RS;Local;117210.0;106974.0;9127.0
+Vera Cruz;RS;Local;26714.0;14550.0;5447.0
+Vila Lângaro;RS;Local;2079.0;372.0;1789.0
+Abdon Batista;SC;Local;2598.0;710.0;2733.0
+Araranguá;SC;Local;71922.0;15796.0;2196.0
+Balneário Camboriú;SC;Local;139155.0;137000.0;9845.0
+Bombinhas;SC;Local;25058.0;4395.0;1754.0
+Campos Novos;SC;Local;36932.0;33481.0;9066.0
+Capinzal;SC;Microrregional;30346.0;4044.0;1333.0
+Cordilheira Alta;SC;Local;4781.0;1118.0;2338.0
+Florianópolis;SC;Regional;3492029.0;878873.0;2517.0
+Fraiburgo;SC;Local;33481.0;4529.0;1353.0
+Gaspar;SC;Local;72570.0;1683.0;232.0
+Gravatal;SC;Local;12435.0;6783.0;5455.0
+Ilhota;SC;Local;17046.0;3038.0;1782.0
+Imbituba;SC;Local;52579.0;3140.0;597.0
+Itajaí;SC;Local;264054.0;82624.0;3129.0
+Itapema;SC;Local;75940.0;57995.0;7637.0
+Itapiranga;SC;Local;16638.0;7038.0;423.0
+Jaraguá do Sul;SC;Local;182660.0;156045.0;8543.0
+Joaçaba;SC;Microrregional;57664.0;43060.0;7467.0
+Joinville;SC;Local;616317.0;256768.0;4166.0
+Lages;SC;Local;164981.0;69722.0;4226.0
+Orleans;SC;Local;23661.0;21150.0;8939.0
+Palhoça;SC;Local;222598.0;33381.0;150.0
+Planalto Alegre;SC;Local;2946.0;1800.0;611.0
+Pomerode;SC;Local;34289.0;588.0;171.0
+Porto Belo;SC;Local;27688.0;10.0;4.0
+Praia Grande;SC;Local;8270.0;1550.0;1874.0
+Rio Negrinho;SC;Local;39261.0;34303.0;8737.0
+São Bento do Sul;SC;Local;83277.0;35394.0;425.0
+São Francisco do Sul;SC;Local;52674.0;16960.0;322.0
+São José do Cedro;SC;Local;14167.0;180.0;127.0
+São Ludgero;SC;Local;13509.0;13509.0;1000.0
+Serra Alta;SC;Local;3303.0;90.0;272.0
+Sombrio;SC;Local;29991.0;12436.0;4147.0
+Sul Brasil;SC;Local;2832.0;1052.0;3715.0
+Tijucas;SC;Local;51592.0;24500.0;4749.0
+Três Barras;SC;Local;19746.0;314.0;159.0
+Tubarão;SC;Local;110088.0;47471.0;4312.0
+Tunápolis;SC;Local;4916.0;237.0;482.0
+Urussanga;SC;Local;20919.0;3240.0;1549.0
+Videira;SC;Local;55466.0;234.0;42.0
+Aracaju;SE;Regional;2099428.0;656534.0;3127.0
+Estância;SE;Local;65078.0;7176.0;1103.0
+Águas de Lindóia;SP;Local;17930.0;17820.0;9939.0
+Altinópolis;SP;Local;16818.0;14718.0;8751.0
+Álvares Florence;SP;Local;3915.0;2637.0;6736.0
+Americana;SP;Local;237240.0;237240.0;1000.0
+Américo Brasiliense;SP;Local;33019.0;33019.0;1000.0
+Américo de Campos;SP;Local;5870.0;5138.0;8753.0
+Amparo;SP;Local;68008.0;50842.0;7476.0
+Analândia;SP;Local;4589.0;3633.0;7917.0
+Andradina;SP;Local;59783.0;54943.0;919.0
+Aparecida;SP;Local;32569.0;28230.0;8668.0
+Araçatuba;SP;Local;200124.0;193517.0;967.0
+Araçoiaba da Serra;SP;Local;32443.0;13959.0;4303.0
+Aramina;SP;Local;5420.0;5419.0;9998.0
+Araraquara;SP;Local;242228.0;235627.0;9727.0
+Araras;SP;Local;130866.0;128553.0;9823.0
+Areias;SP;Local;3577.0;2200.0;615.0
+Ariranha;SP;Local;7602.0;7250.0;9537.0
+Artur Nogueira;SP;Local;51456.0;46239.0;8986.0
+Atibaia;SP;Local;158647.0;89154.0;562.0
+Avanhandava;SP;Local;11263.0;11257.0;9995.0
+Bady Bassitt;SP;Local;27260.0;25246.0;9261.0
+Bálsamo;SP;Local;9596.0;9596.0;1000.0
+Barbosa;SP;Local;5640.0;4623.0;8197.0
+Bariri;SP;Local;31595.0;31584.0;9997.0
+Barra Bonita;SP;Local;34346.0;34346.0;1000.0
+Barretos;SP;Local;122485.0;116752.0;9532.0
+Barrinha;SP;Local;32092.0;31736.0;9889.0
+Batatais;SP;Local;58402.0;52332.0;8961.0
+Bauru;SP;Local;379146.0;379146.0;1000.0
+Bebedouro;SP;Local;76373.0;76373.0;1000.0
+Bilac;SP;Local;7319.0;6722.0;9184.0
+Birigui;SP;Local;118979.0;107248.0;9014.0
+Boa Esperança do Sul;SP;Local;12978.0;10000.0;7705.0
+Bom Jesus dos Perdões;SP;Local;22006.0;21375.0;9713.0
+Borborema;SP;Local;14226.0;13000.0;9138.0
+Borebi;SP;Local;2713.0;2374.0;875.0
+Braúna;SP;Local;5356.0;4685.0;8747.0
+Brodowski;SP;Local;25201.0;25201.0;1000.0
+Brotas;SP;Local;23898.0;23751.0;9938.0
+Buritama;SP;Local;17210.0;17144.0;9962.0
+Cabrália Paulista;SP;Local;4299.0;4229.0;9837.0
+Caconde;SP;Local;17101.0;13223.0;7732.0
+Cafelândia;SP;Local;16654.0;15564.0;9346.0
+Caiuá;SP;Local;5466.0;1367.0;2501.0
+Cajobi;SP;Local;9133.0;8649.0;947.0
+Campinas;SP;Local;1139047.0;1092239.0;9589.0
+Campos Novos Paulista;SP;Local;4888.0;4836.0;9894.0
+Cândido Mota;SP;Local;29449.0;29449.0;1000.0
+Canitar;SP;Local;6283.0;5731.0;9121.0
+Capivari;SP;Local;50068.0;50068.0;1000.0
+Casa Branca;SP;Local;28083.0;27988.0;9966.0
+Castilho;SP;Local;19977.0;14315.0;7166.0
+Catanduva;SP;Local;115791.0;112000.0;9673.0
+Cedral;SP;Local;12618.0;9432.0;7475.0
+Cerqueira César;SP;Local;21469.0;19000.0;885.0
+Cerquilho;SP;Local;44695.0;44024.0;985.0
+Chavantes;SP;Local;12211.0;11002.0;901.0
+Clementina;SP;Local;6982.0;6677.0;9563.0
+Colina;SP;Local;18486.0;16699.0;9033.0
+Conchal;SP;Local;28101.0;28100.0;1000.0
+Cordeirópolis;SP;Local;24514.0;24514.0;1000.0
+Corumbataí;SP;Local;4195.0;2521.0;601.0
+Cosmópolis;SP;Local;59773.0;55000.0;9201.0
+Cosmorama;SP;Local;8719.0;8719.0;1000.0
+Cravinhos;SP;Local;33281.0;33252.0;9991.0
+Cristais Paulista;SP;Local;9272.0;6830.0;7366.0
+Cruzeiro;SP;Local;74961.0;73666.0;9827.0
+Cunha;SP;Local;22110.0;6234.0;282.0
+Descalvado;SP;Local;31756.0;30871.0;9721.0
+Dobrada;SP;Local;8759.0;8570.0;9784.0
+Dois Córregos;SP;Local;24510.0;24170.0;9861.0
+Dracena;SP;Local;45474.0;41784.0;9189.0
+Dumont;SP;Local;9471.0;9471.0;1000.0
+Elisiário;SP;Local;3138.0;3138.0;1000.0
+Embaúba;SP;Local;2323.0;2323.0;1000.0
+Engenheiro Coelho;SP;Local;19566.0;19566.0;1000.0
+Estiva Gerbi;SP;Local;11295.0;10044.0;8892.0
+Garça;SP;Local;42110.0;37629.0;8936.0
+Gavião Peixoto;SP;Local;4702.0;3793.0;8067.0
+Getulina;SP;Local;10232.0;7559.0;7388.0
+Guaiçara;SP;Local;11239.0;11239.0;1000.0
+Guaimbê;SP;Local;5512.0;5340.0;9688.0
+Guaíra;SP;Local;39279.0;39279.0;1000.0
+Guapiaçu;SP;Local;21711.0;21664.0;9978.0
+Guará;SP;Local;18606.0;15782.0;8482.0
+Guaraçaí;SP;Local;7441.0;5793.0;7785.0
+Guaraci;SP;Local;10350.0;10347.0;9997.0
+Guarantã;SP;Local;6427.0;6427.0;1000.0
+Guararapes;SP;Local;31043.0;28707.0;9247.0
+Guaratinguetá;SP;Local;118044.0;108317.0;9176.0
+Guatapará;SP;Local;7320.0;5460.0;7459.0
+Herculândia;SP;Local;9125.0;8290.0;9085.0
+Holambra;SP;Local;15094.0;15094.0;1000.0
+Iacanga;SP;Local;10437.0;7924.0;7592.0
+Ibaté;SP;Local;32178.0;30789.0;9568.0
+Ibirarema;SP;Local;6385.0;5839.0;9145.0
+Ibitinga;SP;Local;60033.0;56730.0;945.0
+Iepê;SP;Local;7619.0;6500.0;8531.0
+Igaraçu do Tietê;SP;Local;23106.0;22743.0;9843.0
+Ilha Solteira;SP;Local;25549.0;23975.0;9384.0
+Indaiatuba;SP;Local;255748.0;239199.0;9353.0
+Indiana;SP;Local;5090.0;5090.0;1000.0
+Ipaussu;SP;Local;13712.0;13326.0;9718.0
+Ipeúna;SP;Local;6831.0;6488.0;9498.0
+Ipiguá;SP;Local;6761.0;3557.0;5261.0
+Ipuã;SP;Local;14454.0;14454.0;1000.0
+Iracemápolis;SP;Local;21967.0;21000.0;956.0
+Irapuru;SP;Local;7085.0;4995.0;705.0
+Itajobi;SP;Local;16989.0;14034.0;8261.0
+Itaju;SP;Local;3618.0;3064.0;8469.0
+Itapira;SP;Local;72022.0;70438.0;978.0
+Itápolis;SP;Local;39493.0;39418.0;9981.0
+Itapuí;SP;Local;13659.0;13655.0;9997.0
+Itapura;SP;Local;3979.0;3783.0;9507.0
+Itirapina;SP;Local;16148.0;16076.0;9955.0
+Itu;SP;Local;168240.0;129100.0;7674.0
+Ituverava;SP;Local;37571.0;37375.0;9948.0
+Jaboticabal;SP;Local;71821.0;71821.0;1000.0
+Jacareí;SP;Local;240275.0;236956.0;9862.0
+Jaci;SP;Local;7613.0;7613.0;1000.0
+Jaguariúna;SP;Local;59347.0;58279.0;982.0
+Jardinópolis;SP;Local;45282.0;45282.0;1000.0
+Jaú;SP;Local;133497.0;129356.0;969.0
+João Ramalho;SP;Local;4371.0;3680.0;8419.0
+José Bonifácio;SP;Local;36633.0;33336.0;910.0
+Júlio Mesquita;SP;Local;4254.0;4254.0;1000.0
+Jumirim;SP;Local;3056.0;3052.0;9987.0
+Jundiaí;SP;Local;443221.0;437843.0;9879.0
+Junqueirópolis;SP;Local;20448.0;16771.0;8202.0
+Lavínia;SP;Local;9689.0;4684.0;4834.0
+Leme;SP;Local;98161.0;95503.0;9729.0
+Lençóis Paulista;SP;Local;66505.0;65696.0;9878.0
+Limeira;SP;Local;291869.0;283159.0;9702.0
+Lindóia;SP;Local;7014.0;6994.0;9971.0
+Louveira;SP;Local;51847.0;48619.0;9377.0
+Luís Antônio;SP;Local;12265.0;11846.0;9658.0
+Macatuba;SP;Local;16829.0;15999.0;9507.0
+Macaubal;SP;Local;7481.0;7460.0;9972.0
+Mairinque;SP;Local;50027.0;30883.0;6173.0
+Manduri;SP;Local;9871.0;9233.0;9354.0
+Marapoama;SP;Local;3292.0;3292.0;1000.0
+Marília;SP;Local;237627.0;237627.0;1000.0
+Martinópolis;SP;Local;24881.0;24881.0;1000.0
+Matão;SP;Local;79033.0;77149.0;9762.0
+Mendonça;SP;Local;6159.0;5601.0;9094.0
+Mineiros do Tietê;SP;Local;11230.0;10731.0;9556.0
+Mirandópolis;SP;Local;27983.0;26203.0;9364.0
+Mirassol;SP;Local;63337.0;61599.0;9726.0
+Mirassolândia;SP;Local;4669.0;3740.0;801.0
+Mogi das Cruzes;SP;Local;451505.0;394226.0;8731.0
+Mogi Guaçu;SP;Local;153658.0;146664.0;9545.0
+Mogi Mirim;SP;Local;92558.0;81120.0;8764.0
+Monte Alegre do Sul;SP;Local;8627.0;3918.0;4542.0
+Monte Azul Paulista;SP;Local;18151.0;18084.0;9963.0
+Morro Agudo;SP;Local;27933.0;25693.0;9198.0
+Motuca;SP;Local;4034.0;4000.0;9916.0
+Murutinga do Sul;SP;Local;3737.0;2102.0;5625.0
+Nantes;SP;Local;2660.0;2359.0;8868.0
+Natividade da Serra;SP;Local;6999.0;2870.0;4101.0
+Neves Paulista;SP;Local;9699.0;8771.0;9043.0
+Nova Aliança;SP;Local;6693.0;5561.0;8309.0
+Nova Castilho;SP;Local;1062.0;1059.0;9972.0
+Nova Europa;SP;Local;9311.0;9311.0;1000.0
+Nova Independência;SP;Local;4609.0;4609.0;1000.0
+Novais;SP;Local;4412.0;4015.0;910.0
+Nova Odessa;SP;Local;62019.0;59458.0;9587.0
+Nuporanga;SP;Local;7391.0;7370.0;9972.0
+Ocauçu;SP;Local;4331.0;3457.0;7982.0
+Olímpia;SP;Local;55074.0;52923.0;9609.0
+Orlândia;SP;Local;38319.0;36938.0;964.0
+Ourinhos;SP;Local;103970.0;100368.0;9654.0
+Ouro Verde;SP;Local;7779.0;7766.0;9983.0
+Pacaembu;SP;Local;14877.0;9344.0;6281.0
+Palestina;SP;Local;11476.0;10507.0;9156.0
+Palmital;SP;Local;19594.0;19559.0;9982.0
+Panorama;SP;Local;14964.0;6589.0;4403.0
+Paraibuna;SP;Local;17667.0;8633.0;4887.0
+Paraíso;SP;Local;6099.0;6099.0;1000.0
+Parisi;SP;Local;2892.0;2892.0;1000.0
+Patrocínio Paulista;SP;Local;14512.0;13900.0;9578.0
+Paulicéia;SP;Local;7955.0;3692.0;4641.0
+Pedreira;SP;Local;43112.0;42222.0;9794.0
+Penápolis;SP;Local;61679.0;59304.0;9615.0
+Pereira Barreto;SP;Local;24095.0;22219.0;9221.0
+Pindorama;SP;Local;14542.0;14542.0;1000.0
+Piquete;SP;Local;12490.0;9804.0;7849.0
+Piracicaba;SP;Local;423323.0;423323.0;1000.0
+Pirajuí;SP;Local;22431.0;22431.0;1000.0
+Pirangi;SP;Local;10885.0;10880.0;9995.0
+Pirassununga;SP;Local;73545.0;67290.0;915.0
+Pitangueiras;SP;Local;33674.0;33674.0;1000.0
+Pompéia;SP;Local;20196.0;18127.0;8976.0
+Pontal;SP;Local;37607.0;37526.0;9978.0
+Porto Feliz;SP;Local;56497.0;56497.0;1000.0
+Porto Ferreira;SP;Local;52649.0;51704.0;9821.0
+Potim;SP;Local;20392.0;20342.0;9975.0
+Potirendaba;SP;Local;18496.0;18496.0;1000.0
+Pradópolis;SP;Local;17078.0;15783.0;9242.0
+Presidente Venceslau;SP;Local;35201.0;35039.0;9954.0
+Promissão;SP;Local;35131.0;32000.0;9109.0
+Rafard;SP;Local;8965.0;8965.0;1000.0
+Rancharia;SP;Local;28588.0;28533.0;9981.0
+Reginópolis;SP;Local;7662.0;4212.0;5497.0
+Ribeirão Bonito;SP;Local;10989.0;10989.0;1000.0
+Ribeirão Preto;SP;Local;698642.0;696653.0;9972.0
+Rincão;SP;Local;9098.0;7073.0;7774.0
+Rinópolis;SP;Local;9259.0;8240.0;8899.0
+Rio Claro;SP;Local;201418.0;201418.0;1000.0
+Sabino;SP;Local;5112.0;5112.0;1000.0
+Sales;SP;Local;6437.0;6407.0;9953.0
+Sales Oliveira;SP;Local;11411.0;11411.0;1000.0
+Salto Grande;SP;Local;9050.0;9050.0;1000.0
+Santa Adélia;SP;Local;14018.0;12950.0;9238.0
+Santa Bárbara D Oeste;SP;Local;183347.0;181036.0;9874.0
+Santa Cruz da Conceição;SP;Local;4277.0;2800.0;6547.0
+Santa Cruz das Palmeiras;SP;Local;28864.0;27962.0;9687.0
+Santa Fé do Sul;SP;Local;34794.0;33394.0;9598.0
+Santa Gertrudes;SP;Local;23611.0;23360.0;9894.0
+Santa Lúcia;SP;Local;7149.0;7004.0;9797.0
+Santa Rita D Oeste;SP;Local;2733.0;1796.0;6572.0
+Santa Rita do Passa Quatro;SP;Local;24833.0;22229.0;8951.0
+Santo Antônio da Alegria;SP;Local;6775.0;6775.0;1000.0
+Santo Antônio de Posse;SP;Local;23244.0;21019.0;9043.0
+Santo Antônio do Aracanguá;SP;Local;8379.0;6573.0;7845.0
+São Caetano do Sul;SP;Local;165655.0;165655.0;1000.0
+São Carlos;SP;Local;254857.0;254857.0;1000.0
+São João de Iracema;SP;Local;1846.0;1400.0;7584.0
+São João do Pau d Alho;SP;Local;2242.0;1797.0;8015.0
+São Joaquim da Barra;SP;Local;48558.0;48058.0;9897.0
+São José da Bela Vista;SP;Local;7626.0;7626.0;1000.0
+São José do Barreiro;SP;Local;3853.0;3447.0;8946.0
+São José do Rio Pardo;SP;Local;52205.0;52204.0;1000.0
+São José do Rio Preto;SP;Local;480393.0;446787.0;930.0
+São Paulo;SP;Regional;29917005.0;26050694.0;8708.0
+São Pedro;SP;Local;38256.0;31850.0;8325.0
+São Pedro do Turvo;SP;Local;7217.0;5119.0;7093.0
+São Sebastião da Grama;SP;Local;10441.0;7996.0;7658.0
+São Simão;SP;Local;13442.0;13374.0;9949.0
+Serrana;SP;Local;43909.0;43909.0;1000.0
+Sertãozinho;SP;Local;126887.0;126387.0;9961.0
+Severínia;SP;Local;14576.0;14468.0;9926.0
+Sorocaba;SP;Local;723682.0;713100.0;9854.0
+Sumaré;SP;Local;279545.0;276255.0;9882.0
+Suzanápolis;SP;Local;3408.0;2213.0;6494.0
+Tabapuã;SP;Local;11323.0;11323.0;1000.0
+Tabatinga;SP;Local;14769.0;14585.0;9875.0
+Taiaçu;SP;Local;5677.0;5677.0;1000.0
+Taiúva;SP;Local;6548.0;6548.0;1000.0
+Tambaú;SP;Local;21435.0;19082.0;8902.0
+Tanabi;SP;Local;25265.0;24339.0;9633.0
+Taquaral;SP;Local;2619.0;2619.0;1000.0
+Taquaritinga;SP;Local;52260.0;49126.0;940.0
+Tietê;SP;Local;37663.0;31885.0;8466.0
+Trabiju;SP;Local;1682.0;1682.0;1000.0
+Tuiuti;SP;Local;6778.0;2650.0;391.0
+Tupi Paulista;SP;Local;15854.0;15670.0;9884.0
+Ubarana;SP;Local;5365.0;5365.0;1000.0
+Uchoa;SP;Local;10394.0;10067.0;9685.0
+Urupês;SP;Local;13744.0;12359.0;8992.0
+Valinhos;SP;Local;126373.0;112505.0;8903.0
+Valparaíso;SP;Local;24241.0;23775.0;9808.0
+Vargem Grande do Sul;SP;Local;40133.0;39539.0;9852.0
+Vera Cruz;SP;Local;10176.0;8469.0;8323.0
+Vinhedo;SP;Local;76540.0;68921.0;9005.0
+Viradouro;SP;Local;17414.0;17413.0;9999.0
+Vista Alegre do Alto;SP;Local;8109.0;7924.0;9772.0
+Votorantim;SP;Local;127923.0;122400.0;9568.0
+Votuporanga;SP;Local;96634.0;96634.0;1000.0
+Ananás;TO;Local;10325.0;3611.0;3497.0
+Dois Irmãos do Tocantins;TO;Local;6327.0;50.0;79.0
+Esperantina;TO;Local;7530.0;2841.0;3773.0
+Gurupi;TO;Microrregional;289636.0;10663.0;368.0
+Itacajá;TO;Local;6819.0;4030.0;591.0
+Palmas;TO;Regional;1270877.0;519917.0;4091.0
+---;---;---;230107079.0;104353402.0;0.0
