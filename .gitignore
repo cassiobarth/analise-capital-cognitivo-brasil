@@ -12,3 +12,6 @@ dados_brutos/
 
 # Ignorar configurações do editor
 .vscode/
+
+# Ignorar downloads
+*.crdownload
