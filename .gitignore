@@ -1,0 +1,34 @@
+# --- 1. Sistema e Python ---
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# --- 2. Arquivos Pesados (Bloqueio Geral) ---
+# Bloqueia arquivos comprimidos e de dados em qualquer lugar
+*.zip
+*.sav
+*.rar
+*.7z
+*.sav
+
+# Bloqueia CSV e Excel em qualquer lugar (por segurança)
+*.csv
+*.xlsx
+*.xls
+
+# --- 3. Exceções (O que você QUER salvar) ---
+# O sinal de exclamação (!) significa "NÃO IGNORE"
+
+# Permite tudo dentro de processed (seus resultados)
+!data/processed/*.csv
+!data/processed/*.xlsx
+!data/processed/*.xls
+
+# Permite documentação se houver
+!docs/*
+
+# --- 4. Dados Brutos (Bloqueio Total) ---
+# Garante que nada da pasta raw suba, mesmo que você tente forçar
+data/raw/
+a_first_legacy/

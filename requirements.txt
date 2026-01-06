@@ -1,0 +1,17 @@
+pandas
+numpy
+requests
+sidrapy
+openpyxl
+polars
+seaborn
+matplotlib
+scipy
+statsmodels
+scikit-learn
+jupyterlab
+tabulate
+esda
+libpysal
+openpyxl
+pyreadstat
