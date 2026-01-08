@@ -3,19 +3,23 @@ PROJECT:     Cognitive Capital Analysis - Brazil
 SCRIPT:      src/cog/00_run_pipeline.py
 RESEARCHERS: Dr. José Aparecido da Silva
              Me. Cássio Dalbem Barth
-DATE:        2026-01-06
+DATE:        2026-01-08 (Architecture Update)
 
 DESCRIPTION: 
     Master Pipeline Orchestrator.
-    Executes all data processing scripts sequentially:
-    1. SAEB 2023
-    2. PISA (2015, 2018, 2022)
-    3. ENEM Triennium (2022-2024)
+    Executes the full End-to-End Data Pipeline in the correct dependency order.
     
-    This ensures that all datasets are generated and updated in the correct order.
+    [PHASE 1: EXTRACTION & PROCESSING]
+    - Extracts raw data and converts to clean CSVs in 'data/processed'.
+    - Covers both Historical (2015-2018) and Recent (2022-2024) waves.
+
+    [PHASE 2: CONSOLIDATION]
+    - Merges the disparate CSVs into a single Longitudinal Panel.
     
-    WARNING: This process is memory intensive and may take considerable time 
-    depending on the hardware, especially during the ENEM processing step.
+    [PHASE 3: ANALYTICS & VISUALIZATION]
+    - Generates correlation matrices and final charts in 'reports/'.
+    
+    WARNING: This process is memory intensive. Ensure all raw ZIPs are present.
 """
 import subprocess
 import sys
@@ -27,14 +31,40 @@ from pathlib import Path
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CURRENT_DIR.parent.parent
 
-# List of scripts to execute in order
+# List of scripts to execute in VALID LOGICAL ORDER
 # Paths are relative to the project root
 PIPELINE_SCRIPTS = [
-    "src/cog/01_process_saeb_2023_uf_region.py",
-    "src/cog/02_process_pisa_2015_uf_region.py",
-    "src/cog/02_process_pisa_2018_region.py",
-    "src/cog/02_process_pisa_2022_region.py",
-    "src/cog/04_process_enem_triennium.py"
+    # ------------------------------------------------------------------
+    # PHASE 1: INDIVIDUAL EXTRACTION (Raw -> Processed CSV)
+    # ------------------------------------------------------------------
+    
+    # 1. SAEB (School Performance)
+    "src/cog/01_process_saeb_historical.py",      # Extracts 2015 & 2017
+    "src/cog/01_process_saeb_2023_uf_region.py",  # Extracts 2023
+    
+    # 2. PISA (International Baseline)
+    "src/cog/02_process_pisa_2015_uf_region.py",  # Extracts 2015
+    "src/cog/02_process_pisa_2018_region.py",     # Extracts 2018
+    "src/cog/02_process_pisa_2022_region.py",     # Extracts 2022
+    
+    # 3. ENEM (National Exam)
+    "src/cog/04_process_enem_historical.py",      # Extracts 2015 & 2018
+    "src/cog/04_process_enem_triennium.py",       # Extracts 2022, 2023, 2024
+    
+    # ------------------------------------------------------------------
+    # PHASE 2: CONSOLIDATION (Processed CSVs -> Master Panel)
+    # ------------------------------------------------------------------
+    # Merges all above into 'data/processed/panel_longitudinal_waves.csv'
+    # CRITICAL: This script depends on all previous scripts succeeding.
+    "src/cog/03_consolidate_longitudinal_panel.py",
+    
+    # ------------------------------------------------------------------
+    # PHASE 3: ANALYTICS & INSIGHTS (Master Panel -> Reports)
+    # ------------------------------------------------------------------
+    # Calculates Pearson/Spearman correlations
+    "src/cog/05_correlate_pearson_spearman.py",
+    # Generates Heatmaps and Scatterplots
+    "src/cog/06_visualize_correlations.py"
 ]
 
 def run_script(script_path):
@@ -86,18 +116,24 @@ def main():
         if success:
             success_count += 1
         else:
-            print(f"[WARNING] Pipeline continuing, but {script} failed.")
-            # Optional: break here if you want to stop on first error
-            # break 
+            print(f"[WARNING] Pipeline failed at step: {script}")
+            
+            # CRITICAL CHECK:
+            # If the Consolidation script (03) fails, the subsequent Analytics scripts (05, 06)
+            # will definitely fail because the input file won't exist. It's safer to stop.
+            if "03_consolidate" in script:
+                print("\n[CRITICAL ERROR] Consolidation failed. Stopping downstream analytics.")
+                print("Please check the logs above, fix the error, and re-run.")
+                break
 
     total_elapsed = time.time() - total_start
     print("\n" + "="*60)
     print("PIPELINE EXECUTION SUMMARY")
     print("="*60)
-    print(f"Total Scripts: {len(PIPELINE_SCRIPTS)}")
-    print(f"Successful:    {success_count}")
-    print(f"Failed:        {len(PIPELINE_SCRIPTS) - success_count}")
-    print(f"Total Time:    {total_elapsed / 60:.2f} minutes")
+    print(f"Total Scripts Queued: {len(PIPELINE_SCRIPTS)}")
+    print(f"Successful:           {success_count}")
+    print(f"Failed/Skipped:       {len(PIPELINE_SCRIPTS) - success_count}")
+    print(f"Total Time:           {total_elapsed / 60:.2f} minutes")
     print("="*60)
 
 if __name__ == "__main__":

@@ -2,8 +2,8 @@
 
 **Project:** Cognitive Capital Analysis - Brazil
 **Researchers:** Dr. José Aparecido da Silva | Me. Cássio Dalbem Barth
-**Last Update:** 2026-01-06
-**Status:** Data Pipeline Complete and Validated
+**Last Update:** 2026-01-08
+**Status:** Architecture Refactored & Longitudinal Waves Defined
 
 ---
 
@@ -46,18 +46,31 @@
 - Creation of `00_run_pipeline.py` using `subprocess`.
 - Ensures secure sequential execution, clearing memory between each intensive step.
 
+### 7. Architecture Refactoring & Longitudinal Definition (New)
+- **Dual Export Architecture:** Decoupled Data Engineering from Analytics.
+    - **Engineering:** Clean `.csv` files are now strictly saved to `data/processed/` (Machine-readable source of truth).
+    - **Analytics:** Formatted `.xlsx` and Charts are saved to `reports/varcog/` (Human-readable).
+- **Longitudinal Waves:** Defined specific temporal waves to synchronize assessment cycles:
+    - **Wave 2015:** PISA 2015 + ENEM 2015 + SAEB 2015 (Perfect Sync).
+    - **Wave 2018:** PISA 2018 + ENEM 2018 + SAEB 2017 (Nearest Neighbor).
+    - **Wave 2022:** PISA 2022 + ENEM 2022 + SAEB 2023 (Post-Pandemic Recovery).
+- **New ETL Components:**
+    - Developed `01_process_saeb_historical.py` and `04_process_enem_historical.py` to handle legacy data.
+    - Developed **`03_consolidate_longitudinal_panel.py`**, the Master ETL script that merges PISA, SAEB, and ENEM into a single longitudinal dataset (`panel_longitudinal_waves.csv`).
+
 ---
 
 ## Code Architecture (`src/cog/`)
 
 | Script | Main Function |
 | :--- | :--- |
-| **`00_run_pipeline.py`** | **Master Orchestrator.** Runs all scripts below in order. |
-| `01_process_saeb_2023.py` | Extracts SAEB data, maps UF/Region, and generates rankings. |
+| **`00_run_pipeline.py`** | **Master Orchestrator.** Updated to include historical extraction and consolidation steps. |
+| `01_process_saeb_*.py` | Extracts SAEB data (Historical 2015/17 & Recent 2023), maps UF/Region. |
 | `02_process_pisa_*.py` | Series of scripts to clean PISA data (2015, 2018, 2022). |
-| `03_compare_years.py` | Generates the variation table (Delta) for PISA pre- and post-pandemic. |
-| `04_process_enem_triennium.py` | Processes 3 years of ENEM and consolidates into a single robust indicator. |
-| `05_correlate_indicators.py` | Crosses PISA, SAEB, and ENEM. Generates Correlation Matrices and Scatter Plots. |
+| `03_consolidate_panel.py` | **(New)** Merges processed CSVs from all sources into the Master Longitudinal Panel. |
+| `04_process_enem_*.py` | Processes Historical (2015/18) and Triennium (2022-24) ENEM data. |
+| `05_correlate_*.py` | Reads the Master Panel to generate Correlation Matrices (Pearson/Spearman). |
+| `06_visualize_*.py` | Generates Heatmaps and Scatter Plots based on the consolidated data. |
 
 ---
 
@@ -70,5 +83,7 @@
 ---
 
 ## Next Steps
-1.  Draft qualitative analysis based on the generated charts.
-2.  Investigate socioeconomic factors (if data becomes available) that explain the divergence of the South Region.
+1.  Run the full refactored pipeline to generate the `panel_longitudinal_waves.csv`.
+2.  Validate the consistency of historical data merges.
+3.  Draft qualitative analysis based on the generated longitudinal charts.
+4.  Investigate socioeconomic factors (if data becomes available) that explain the divergence of the South Region.
