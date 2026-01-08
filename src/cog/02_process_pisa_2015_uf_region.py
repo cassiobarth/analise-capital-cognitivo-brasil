@@ -1,201 +1,190 @@
 """
 PROJECT:     Cognitive Capital Analysis - Brazil
-SCRIPT:      src/cog/02_process_pisa_2018.py
-RESEARCHERS: Dr. José Aparecido da Silva
-             Me. Cássio Dalbem Barth
-DATE:        2026-01-06
+SCRIPT:      src/cog/02_process_pisa_2015_uf_region.py
+RESEARCHERS: Dr. Jose Aparecido da Silva
+             Me. Cassio Dalbem Barth
+DATE:        2026-01-08 (Fix v2.4: Path Correction)
 
-DESCRIPTION: 
-    Processes PISA 2018 student data (Region Level).
-    - Robust filtering for Brazil (removes ALB, VNM, etc.).
-    - Decodes MACRO-REGIONS using STRATUM string patterns.
-    - Calculates Mean Scores (Math, Reading, Science).
-    - EXPORTS: 
-        1. Processed Dataset (data/processed/)
-        2. Summary Report Table (reports/tables/)
+DESCRIPTION:
+    Extracts PISA 2015 Student Data (SPSS format) for Brazil.
+    
+    IMPROVEMENTS:
+    1. Label Decoding: Applies SPSS value labels to map 'STRATUM' codes to text.
+    2. Geocoding: Maps State Names (e.g. "São Paulo") to IBGE codes.
+    3. Reporting: 
+       - CSV (Processed Data) -> data/processed/
+       - XLSX (Analytics Report) -> reports/varcog/xlsx/
 
-DATA SOURCE CITATION:
-    Title:      PISA 2018 Database
-    Author:     Organisation For Economic Co-Operation and Development (OECD)
-    Publisher:  Zenodo
-    Date:       2019
-    DOI:        10.5281/zenodo.13383223
-    URL:        https://zenodo.org/records/13383223
-    File:       CY07_MSU_STU_QQQ.sav
-    
-    Index
-    Region: The Macro-Region name (e.g., South, Southeast, North, etc.).
-    
-    Data 
-    Columns
-    Student_Count: The total number of students ($N$) in the sample for that region.
-    Math_Mean: The average score for Mathematics.
-    Read_Mean: The average score for Reading.
-    Science_Mean: The average score for Science.
-    Cognitive_Global_Mean: The calculated composite average of Math, Reading, and Science.
-    
-    
+INPUT:
+    - data/raw/Pisa/pisa_2015/*STU*.sav
+
+OUTPUT:
+    - data/processed/pisa_2015_states.csv
+    - reports/varcog/xlsx/pisa_2015_states.xlsx
 """
-"""
-PROJECT:     Cognitive Capital Analysis - Brazil
-SCRIPT:      src/cog/02_process_pisa_2015.py
-RESEARCHERS: Dr. José Aparecido da Silva
-             Me. Cássio Dalbem Barth
-DATE:        2026-01-06
 
-DESCRIPTION: 
-    Processes PISA 2015 student data (State & Region Level).
-    - Robust filtering for Brazil.
-    - Decodes STATES (UF) from SUBNATIO/STRATUM codes.
-    - Maps STATES to MACRO-REGIONS.
-    - Calculates Mean Scores (Math, Reading, Science).
-    - EXPORTS: 
-        1. Processed Dataset (data/processed/)
-        2. Summary Report Table (reports/varcog/)
-
-DATA SOURCE CITATION:
-    Title:      PISA 2015 Database
-    Author:     OECD
-    Publisher:  Zenodo
-    Date:       2016
-    File:       CY6_MS_CMB_STU_QQQ.sav
-"""
 import pandas as pd
-import numpy as np
 import os
-from pathlib import Path
+import sys
+import pyreadstat
+import numpy as np
+import re
 
-# --- CONFIGURATION ---
-SEED = 42
-np.random.seed(SEED)
+# --- 1. SAFEGUARD IMPORT PROTOCOL ---
+script_dir = os.path.dirname(os.path.abspath(__file__))
+lib_path = os.path.join(script_dir, 'lib')
+if lib_path not in sys.path: sys.path.append(lib_path)
 
-CURRENT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = CURRENT_DIR.parent.parent
-RAW_FILE = PROJECT_ROOT / 'data' / 'raw' / 'Pisa' / 'pisa_2015' / 'CY6_MS_CMB_STU_QQQ.sav'
+try:
+    from safeguard import DataGuard
+except ImportError:
+    DataGuard = None
 
+# --- 2. CONFIGURATION & PATHS ---
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DATA_RAW = os.path.join(BASE_PATH, 'data', 'raw', 'Pisa', 'pisa_2015')
 
-# Outputs
-REPORT_DIR = PROJECT_ROOT / 'reports' / 'varcog'
-PATH_CSV = REPORT_DIR / 'data' / 'processed' / 'pisa_2015_states.csv'
-PATH_XLSX = REPORT_DIR / 'xlsx' / 'pisa_2015_states.xlsx'
+# CORRECTED OUTPUT DIRECTORIES
+# CSVs go to the main data pipeline folder
+CSV_DIR = os.path.join(BASE_PATH, 'data', 'processed')
+# Excel reports go to the analytics folder
+XLSX_DIR = os.path.join(BASE_PATH, 'reports', 'varcog', 'xlsx')
 
-# --- MAPPINGS ---
-# 1. IBGE Code to State (UF)
-IBGE_CODE_MAP = {
-    '11': 'RO', '12': 'AC', '13': 'AM', '14': 'RR', '15': 'PA', '16': 'AP', '17': 'TO',
-    '21': 'MA', '22': 'PI', '23': 'CE', '24': 'RN', '25': 'PB', '26': 'PE', '27': 'AL', '28': 'SE', '29': 'BA',
-    '31': 'MG', '32': 'ES', '33': 'RJ', '35': 'SP', # Note: 34 does not exist
-    '41': 'PR', '42': 'SC', '43': 'RS',
-    '50': 'MS', '51': 'MT', '52': 'GO', '53': 'DF'
+os.makedirs(CSV_DIR, exist_ok=True)
+os.makedirs(XLSX_DIR, exist_ok=True)
+
+# --- 3. MAPPING DICTIONARIES ---
+NAME_TO_IBGE = {
+    'RONDONIA': 11, 'RONDÔNIA': 11, 'ACRE': 12, 'AMAZONAS': 13, 'RORAIMA': 14,
+    'PARA': 15, 'PARÁ': 15, 'AMAPA': 16, 'AMAPÁ': 16, 'TOCANTINS': 17,
+    'MARANHAO': 21, 'MARANHÃO': 21, 'PIAUI': 22, 'PIAUÍ': 22, 'CEARA': 23, 'CEARÁ': 23,
+    'RIO GRANDE DO NORTE': 24, 'PARAIBA': 25, 'PARAÍBA': 25, 'PERNAMBUCO': 26,
+    'ALAGOAS': 27, 'SERGIPE': 28, 'BAHIA': 29,
+    'MINAS GERAIS': 31, 'ESPIRITO SANTO': 32, 'ESPÍRITO SANTO': 32,
+    'RIO DE JANEIRO': 33, 'SAO PAULO': 35, 'SÃO PAULO': 35,
+    'PARANA': 41, 'PARANÁ': 41, 'SANTA CATARINA': 42, 'RIO GRANDE DO SUL': 43,
+    'MATO GROSSO DO SUL': 50, 'MATO GROSSO': 51, 'GOIAS': 52, 'GOIÁS': 52, 'DISTRITO FEDERAL': 53
 }
 
-# 2. State (UF) to Macro-Region
-UF_REGION_MAP = {
-    # North
-    'RO': 'North', 'AC': 'North', 'AM': 'North', 'RR': 'North', 
-    'PA': 'North', 'AP': 'North', 'TO': 'North',
-    # Northeast
-    'MA': 'Northeast', 'PI': 'Northeast', 'CE': 'Northeast', 'RN': 'Northeast', 
-    'PB': 'Northeast', 'PE': 'Northeast', 'AL': 'Northeast', 'SE': 'Northeast', 'BA': 'Northeast',
-    # Southeast
-    'MG': 'Southeast', 'ES': 'Southeast', 'RJ': 'Southeast', 'SP': 'Southeast',
-    # South
-    'PR': 'South', 'SC': 'South', 'RS': 'South',
-    # Center-West
-    'MS': 'Center-West', 'MT': 'Center-West', 'GO': 'Center-West', 'DF': 'Center-West'
+REGIONAL_MAP = {
+    'N': [11, 12, 13, 14, 15, 16, 17],
+    'NE': [21, 22, 23, 24, 25, 26, 27, 28, 29],
+    'SE': [31, 32, 33, 35],
+    'S': [41, 42, 43],
+    'CO': [50, 51, 52, 53]
+}
+IBGE_TO_REGION = {code: reg for reg, codes in REGIONAL_MAP.items() for code in codes}
+
+IBGE_TO_SIGLA = {
+    11:'RO', 12:'AC', 13:'AM', 14:'RR', 15:'PA', 16:'AP', 17:'TO',
+    21:'MA', 22:'PI', 23:'CE', 24:'RN', 25:'PB', 26:'PE', 27:'AL', 28:'SE', 29:'BA',
+    31:'MG', 32:'ES', 33:'RJ', 35:'SP', 41:'PR', 42:'SC', 43:'RS',
+    50:'MS', 51:'MT', 52:'GO', 53:'DF'
 }
 
-def setup_directories():
-    for p in [PATH_CSV.parent, PATH_XLSX.parent]:
-        p.mkdir(parents=True, exist_ok=True)
+def resolve_ibge_from_text(text_label):
+    if not isinstance(text_label, str): return None
+    text_upper = text_label.upper()
+    sorted_names = sorted(NAME_TO_IBGE.keys(), key=len, reverse=True)
+    for name in sorted_names:
+        if name in text_upper: return NAME_TO_IBGE[name]
+    return None
 
 def process_pisa_2015():
-    print(f"[INFO] Loading PISA 2015: {RAW_FILE.name}")
-    
-    # SUBNATIO often holds the State Code (e.g., BR-SP) directly in 2015
-    cols = ['CNT', 'STRATUM', 'SUBNATIO', 'PV1MATH', 'PV1READ', 'PV1SCIE']
-    
+    print("="*60)
+    print("[START] PISA 2015 Extraction (v2.3 Excel+CSV)")
+    print("="*60)
+
+    if not os.path.exists(DATA_RAW):
+        print(f"[ERROR] Directory missing: {DATA_RAW}")
+        return
+
+    sav_files = [f for f in os.listdir(DATA_RAW) if 'STU' in f and f.endswith('.sav')]
+    if not sav_files:
+        print("[CRITICAL] No Student (STU) file found.")
+        return
+
+    target_file = os.path.join(DATA_RAW, sav_files[0])
+    print(f"[FILE] Reading: {sav_files[0]}")
+
     try:
-        # Load data (convert_categoricals=False helps read raw codes if needed, 
-        # but 2015 usually works well with default if we look for strings)
-        df = pd.read_spss(RAW_FILE, usecols=cols)
+        # Metadata Scan
+        _, meta = pyreadstat.read_sav(target_file, metadataonly=True)
         
-        # --- ROBUST FILTERING ---
-        # Convert CNT to string and look for 'Brazil' or 'BRA'
-        mask = df['CNT'].astype(str).str.contains('Brazil|BRA', case=False, na=False)
-        df = df[mask].copy()
+        candidates = ['STRATUM', 'REGION', 'CNT', 'ST004D01T']
+        region_col = next((c for c in candidates if c in meta.column_names), None)
+        scores = [c for c in meta.column_names if c.startswith('PV1') and any(x in c for x in ['MATH', 'READ', 'SCIE'])]
         
-        print(f"       - Brazil rows found: {len(df)}")
-        if len(df) == 0:
-            print("[ERROR] No Brazil rows found. Check 'CNT' column content.")
-            return None
+        if not region_col:
+            print("[CRITICAL] No region column found.")
+            return
+
+        use_cols = list(set([region_col] + scores))
+        if 'CNT' in meta.column_names: use_cols.append('CNT')
+
+        # Data Load
+        print(f"[INFO] Loading {len(use_cols)} columns...")
+        df, meta = pyreadstat.read_sav(target_file, usecols=use_cols)
+        
+        if 'CNT' in df.columns:
+            df = df[df['CNT'] == 'BRA'].copy()
+
+        # Apply Labels
+        if region_col in meta.variable_value_labels:
+            print(f"[INFO] Decoding '{region_col}' labels...")
+            labels = meta.variable_value_labels[region_col]
+            df['STRATUM_TEXT'] = df[region_col].map(labels).fillna(df[region_col].astype(str))
+        else:
+            df['STRATUM_TEXT'] = df[region_col].astype(str)
+
+        # Geocoding
+        df['IBGE_CODE'] = df['STRATUM_TEXT'].apply(resolve_ibge_from_text)
+        valid_rows = df['IBGE_CODE'].notnull().sum()
+        print(f"[STATS] Mapped Rows: {valid_rows}/{len(df)}")
+        
+        if valid_rows == 0:
+            print("[CRITICAL] Mapping failed. Aborting.")
+            return
+
+        # Cleaning
+        df = df.dropna(subset=['IBGE_CODE'])
+        cols_math = [c for c in df.columns if 'MATH' in c]
+        cols_read = [c for c in df.columns if 'READ' in c]
+        cols_scie = [c for c in df.columns if 'SCIE' in c]
+        
+        if cols_math: df['Math'] = df[cols_math[0]]
+        if cols_read: df['Read'] = df[cols_read[0]]
+        if cols_scie: df['Science'] = df[cols_scie[0]]
+
+        # Aggregation
+        summary = df.groupby('IBGE_CODE')[['Math', 'Read', 'Science']].mean().reset_index()
+        summary['UF'] = summary['IBGE_CODE'].map(IBGE_TO_SIGLA)
+        summary['Region'] = summary['IBGE_CODE'].map(IBGE_TO_REGION)
+        summary['Cognitive_Global_Mean'] = summary[['Math', 'Read', 'Science']].mean(axis=1)
+        summary = summary.sort_values(by='Cognitive_Global_Mean', ascending=False)  # <--- ORDENAÇÃO
+        summary = summary[['Region', 'UF', 'Math', 'Read', 'Science', 'Cognitive_Global_Mean']]
+
+        # SafeGuard
+        if DataGuard:
+            print("[AUDIT] Verifying Consistency...")
+            guard = DataGuard(summary, "PISA 2015")
+            guard.check_historical_consistency('Cognitive_Global_Mean', 'UF')
+            guard.validate(strict=True)
+
+        # Save Outputs
+        out_csv = os.path.join(CSV_DIR, 'pisa_2015_states.csv')
+        out_xlsx = os.path.join(XLSX_DIR, 'pisa_2015_states.xlsx')
+        
+        summary.to_csv(out_csv, index=False)
+        summary.to_excel(out_xlsx, index=False)
+        
+        print(f"[SUCCESS] Reports Generated:")
+        print(f"          CSV:  {out_csv}")
+        print(f"          XLSX: {out_xlsx}")
 
     except Exception as e:
-        print(f"[ERROR] {e}")
-        return None
-
-    print("[INFO] Mapping States and Regions...")
-
-    def get_uf(row):
-        # 1. Try SUBNATIO first (Best source)
-        sub = str(row['SUBNATIO'])
-        for code, uf in IBGE_CODE_MAP.items():
-            if code in sub: return uf
-            
-        # 2. Try STRATUM (Backup)
-        strat = str(row['STRATUM'])
-        for code, uf in IBGE_CODE_MAP.items():
-            if f"stratum {code}" in strat or f"BRA{code}" in strat:
-                return uf
-                
-        return 'UNKNOWN'
-
-    # 1. Create UF Column
-    df['UF'] = df.apply(get_uf, axis=1)
-    
-    # Validation
-    unknowns = df[df['UF'] == 'UNKNOWN']
-    if len(unknowns) > 0:
-        print(f"[WARNING] {len(unknowns)} rows unmapped. Sample Stratum: {unknowns['STRATUM'].iloc[0]}")
-    
-    df = df[df['UF'] != 'UNKNOWN']
-
-    # 2. Create Region Column
-    df['Region'] = df['UF'].map(UF_REGION_MAP)
-
-    # --- AGGREGATE ---
-    # Group by BOTH Region and UF to keep the hierarchy
-    res = df.groupby(['Region', 'UF'])[['PV1MATH', 'PV1READ', 'PV1SCIE']].mean().reset_index()
-    
-    # Calculate Cognitive Global Mean
-    res['Cognitive_Global_Mean'] = (res['PV1MATH'] + res['PV1READ'] + res['PV1SCIE']) / 3
-    
-    # Renaming columns for consistency
-    res = res.rename(columns={
-        'PV1MATH': 'Math_Mean',
-        'PV1READ': 'Read_Mean',
-        'PV1SCIE': 'Science_Mean'
-    })
-    
-    return res.round(2).sort_values('Cognitive_Global_Mean', ascending=False)
+        print(f"[CRITICAL FAILURE] {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
-    setup_directories()
-    
-    if RAW_FILE.exists():
-        df_final = process_pisa_2015()
-        
-        if df_final is not None and not df_final.empty:
-            df_final.to_csv(PATH_CSV, index=False)
-            df_final.to_excel(PATH_XLSX, index=False)
-            print(f"[SUCCESS] CSV Saved: {PATH_CSV}")
-            print(f"[SUCCESS] Excel Saved: {PATH_XLSX}")
-            print("\n--- FIRST 10 ROWS (Sorted by Score) ---")
-            print(df_final.head(10))
-            
-            # Optional: Print Regional Summary as well
-            print("\n--- REGIONAL SUMMARY ---")
-            print(df_final.groupby('Region')[['Cognitive_Global_Mean']].mean().sort_values('Cognitive_Global_Mean', ascending=False))
-            
-    else:
-        print(f"[ERROR] File not found: {RAW_FILE}")
+    process_pisa_2015()

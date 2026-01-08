@@ -1,80 +1,99 @@
-"""
-PROJECT:     Cognitive Capital Analysis - Brazil
-SCRIPT:      src/cog/01_process_saeb_historical.py
-DESCRIPTION: Extracts SAEB 2015 and 2017 (High School) to Engineering & Analytics.
-"""
 import pandas as pd
-import numpy as np
+import os
 import zipfile
-from pathlib import Path
+import numpy as np
 
-# --- CONFIGURATION ---
-CURRENT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = CURRENT_DIR.parent.parent
+# Configurações de caminhos
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DATA_RAW = os.path.join(BASE_PATH, 'data', 'raw')
+DATA_PROCESSED = os.path.join(BASE_PATH, 'data', 'processed')
+os.makedirs(DATA_PROCESSED, exist_ok=True)
 
-PROC_DIR = PROJECT_ROOT / 'data' / 'processed'
-REPORT_XLSX_DIR = PROJECT_ROOT / 'reports' / 'varcog' / 'xlsx'
-
-RAW_DIR = PROJECT_ROOT / 'data' / 'raw'
-TARGETS = {
-    2015: {'file': 'microdados_saeb_2015.zip', 'cols': ['ID_UF', 'PROFICIENCIA_MT', 'PROFICIENCIA_LP']},
-    2017: {'file': 'microdados_saeb_2017.zip', 'cols': ['ID_UF', 'PROFICIENCIA_MT', 'PROFICIENCIA_LP']}
+# Mapeamento flexível de colunas (Ano -> {alvo: [possiveis_nomes]})
+COLUMN_VARIANTS = {
+    'uf': ['ID_UF', 'ID_UF_RESIDENCIA', 'CO_UF'],
+    'lp': ['PROFICIENCIA_LP', 'PROFICIENCIA_LP_SAEB', 'MEDIA_LP'],
+    'mt': ['PROFICIENCIA_MT', 'PROFICIENCIA_MT_SAEB', 'MEDIA_MT']
 }
 
-IBGE_MAP = {11:'RO',12:'AC',13:'AM',14:'RR',15:'PA',16:'AP',17:'TO',21:'MA',22:'PI',23:'CE',24:'RN',25:'PB',26:'PE',27:'AL',28:'SE',29:'BA',31:'MG',32:'ES',33:'RJ',35:'SP',41:'PR',42:'SC',43:'RS',50:'MS',51:'MT',52:'GO',53:'DF'}
+def resolve_column(df, target_key):
+    """Retorna a primeira coluna encontrada no DF que corresponde às variantes."""
+    possibilities = COLUMN_VARIANTS.get(target_key, [])
+    for p in possibilities:
+        if p in df.columns:
+            return p
+    return None
 
-def setup():
-    for p in [PROC_DIR, REPORT_XLSX_DIR]: p.mkdir(parents=True, exist_ok=True)
-
-def process_year(year, config):
-    zip_path = RAW_DIR / config['file']
-    print(f"[INFO] Processing SAEB {year} from {zip_path.name}...")
-    
-    if not zip_path.exists():
-        print(f"   [!] File not found: {zip_path}")
-        return
+def load_saeb_year(year, zip_filename):
+    zip_path = os.path.join(DATA_RAW, zip_filename)
+    if not os.path.exists(zip_path):
+        print(f"[WARNING] Arquivo não encontrado: {zip_filename}")
+        return None
 
     try:
-        with zipfile.ZipFile(zip_path) as z:
-            # Tenta achar arquivo de alunos 3º ano
-            fname = next((f for f in z.namelist() if 'TS_ALUNO_3' in f), None)
-            if not fname:
-                print("   [!] CSV TS_ALUNO not found in zip.")
-                return
+        with zipfile.ZipFile(zip_path, 'r') as z:
+            # Busca arquivo TS_ESCOLA ou TS_ALUNO
+            files = z.namelist()
+            target = next((f for f in files if 'TS_ESCOLA' in f and f.endswith('.csv')), None)
+            
+            if not target:
+                print(f"[ERROR] TS_ESCOLA não encontrado em {zip_filename}")
+                return None
+            
+            print(f"[INFO] Processando {target}...")
+            
+            # Lê apenas as primeiras linhas para pegar o header correto
+            # O separador pode variar entre ';' e ','
+            try:
+                df_iter = pd.read_csv(z.open(target), sep=';', encoding='latin1', iterator=True, chunksize=10000)
+                df_chunk = next(df_iter)
+            except:
+                 df_iter = pd.read_csv(z.open(target), sep=',', encoding='latin1', iterator=True, chunksize=10000)
+                 df_chunk = next(df_iter)
 
-            with z.open(fname) as f:
-                df = pd.read_csv(f, sep=';', encoding='latin1', usecols=config['cols'])
-
-        # Padronizar
-        c_uf = [c for c in config['cols'] if 'UF' in c][0]
-        c_mt = [c for c in config['cols'] if 'MT' in c][0]
-        c_lp = [c for c in config['cols'] if 'LP' in c][0]
-
-        df['UF'] = df[c_uf].map(IBGE_MAP)
-        df['MT'] = pd.to_numeric(df[c_mt], errors='coerce')
-        df['LP'] = pd.to_numeric(df[c_lp], errors='coerce')
-        
-        # Média
-        agg = df.groupby('UF')[['MT', 'LP']].mean().reset_index()
-        agg['SAEB_General'] = (agg['MT'] + agg['LP']) / 2
-        
-        # Formatar saída
-        out = agg[['UF', 'SAEB_General', 'MT', 'LP']].round(2).sort_values('SAEB_General', ascending=False)
-
-        # 1. Save Engineering
-        proc_path = PROC_DIR / f'saeb_{year}_states.csv'
-        out.to_csv(proc_path, index=False)
-        print(f"   [ENG] Saved: {proc_path}")
-
-        # 2. Save Analytics
-        rep_path = REPORT_XLSX_DIR / f'saeb_{year}_states.xlsx'
-        out.to_excel(rep_path, index=False)
-        print(f"   [RPT] Saved: {rep_path}")
+            # Resolve nomes das colunas
+            col_uf = resolve_column(df_chunk, 'uf')
+            col_lp = resolve_column(df_chunk, 'lp')
+            col_mt = resolve_column(df_chunk, 'mt')
+            
+            if not all([col_uf, col_lp, col_mt]):
+                print(f"[ERROR] Colunas críticas não encontradas no ano {year}. Header: {list(df_chunk.columns)}")
+                return None
+            
+            # Recarrega dataset inteiro apenas com colunas úteis
+            use_cols = [col_uf, col_lp, col_mt]
+            df = pd.read_csv(z.open(target), sep=';', encoding='latin1', usecols=use_cols)
+            
+            # Renomeia para padrão
+            df = df.rename(columns={col_uf: 'ID_UF', col_lp: 'PROFICIENCIA_LP', col_mt: 'PROFICIENCIA_MT'})
+            df['NU_ANO'] = year
+            
+            # Tratamento numérico (vírgula para ponto)
+            for col in ['PROFICIENCIA_LP', 'PROFICIENCIA_MT']:
+                if df[col].dtype == object:
+                    df[col] = df[col].astype(str).str.replace(',', '.').astype(float)
+            
+            return df
 
     except Exception as e:
-        print(f"   [ERROR] {e}")
+        print(f"[ERROR] Falha no processamento SAEB {year}: {e}")
+        return None
+
+def main():
+    dfs = []
+    for year, file in [(2015, 'microdados_saeb_2015.zip'), (2017, 'microdados_saeb_2017.zip')]:
+        df = load_saeb_year(year, file)
+        if df is not None:
+            dfs.append(df)
+    
+    if dfs:
+        full = pd.concat(dfs)
+        # Agregação por UF
+        grouped = full.groupby(['NU_ANO', 'ID_UF'])[['PROFICIENCIA_LP', 'PROFICIENCIA_MT']].mean().reset_index()
+        
+        out_path = os.path.join(DATA_PROCESSED, 'saeb_historical_consolidated.csv')
+        grouped.to_csv(out_path, index=False)
+        print(f"[SUCCESS] Arquivo consolidado salvo: {out_path}")
 
 if __name__ == "__main__":
-    setup()
-    for year, cfg in TARGETS.items():
-        process_year(year, cfg)
+    main()
