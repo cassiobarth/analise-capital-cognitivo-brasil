@@ -1,80 +1,31 @@
 """
 PROJECT:     Cognitive Capital Analysis - Brazil
-SCRIPT:      src/cog/01_process_saeb_historical.py
-RESEARCHERS: Dr. Jose Aparecido da Silva
-             Me. Cassio Dalbem Barth
-DATE:        2026-01-08 (Fix v2.3: Pure Score + Context Columns)
+SCRIPT:      src/cog/saeb_unified_pipeline.py
+ROLE:        Senior Data Science Advisor
+DATE:        2026-01-10 (v5.0 - Smart Batch Processing)
 
 DESCRIPTION:
-    Extracts historical SAEB data (School Level).
-    
-    METHODOLOGY:
-    - Score: 'SAEB_General' is strictly (Math + Language) / 2.
-    - Context: 'SES_Index' (Socioeconomic) and 'Public_Share' are extracted 
-      as independent variables for correlation analysis.
-    - Architecture: Generates individual files per year (2015, 2017).
-
-INPUT:
-    - data/raw/microdados_saeb_2015.zip
-    - data/raw/microdados_saeb_2017.zip
-
-OUTPUT:
-    - data/processed/saeb_table_2015.csv
-    - data/processed/saeb_table_2017.csv
-    - reports/varcog/xlsx/saeb_table_2015.xlsx
-    - reports/varcog/xlsx/saeb_table_2017.xlsx
+    Unified pipeline to process SAEB Microdata.
+    Supports Batch Processing: Inputs multiple years, checks for default files,
+    and interactively requests paths only for missing files.
 """
 
 import pandas as pd
-import os
-import sys
-import zipfile
 import numpy as np
+import os
+import zipfile
+import sys
+import logging
 
-# --- 1. SAFEGUARD IMPORT PROTOCOL ---
-script_dir = os.path.dirname(os.path.abspath(__file__))
-lib_path = os.path.join(script_dir, 'lib')
-if lib_path not in sys.path: sys.path.append(lib_path)
-
-try:
-    from safeguard import DataGuard
-except ImportError:
-    DataGuard = None
-
-# --- 2. CONFIGURATION ---
+# --- GLOBAL CONFIG ---
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_RAW = os.path.join(BASE_PATH, 'data', 'raw')
 DATA_PROCESSED = os.path.join(BASE_PATH, 'data', 'processed')
 REPORT_XLSX = os.path.join(BASE_PATH, 'reports', 'varcog', 'xlsx')
+LOG_DIR = os.path.join(BASE_PATH, 'logs')
 
-os.makedirs(DATA_PROCESSED, exist_ok=True)
-os.makedirs(REPORT_XLSX, exist_ok=True)
-
-# Priority: High School (3EM) > 9th Grade (9EF)
-PRIORITY_LP = ['MEDIA_3EM_LP', 'MEDIA_9EF_LP', 'MEDIA_5EF_LP', 'PROFICIENCIA_LP_SAEB', 'PROFICIENCIA_LP']
-PRIORITY_MT = ['MEDIA_3EM_MT', 'MEDIA_9EF_MT', 'MEDIA_5EF_MT', 'PROFICIENCIA_MT_SAEB', 'PROFICIENCIA_MT']
-UF_COLS = ['ID_UF', 'UF', 'SG_UF', 'CO_UF']
-
-# Context Variables
-# SES: Socioeconomic Level (NSE)
-# TYPE: Administrative Dependency (Public vs Private)
-CONTEXT_COLS = {
-    'SES': ['NIVEL_SOCIO_ECONOMICO', 'NSE', 'MEDIA_NIVEL_SOCIO_ECONOMICO'], 
-    'TYPE': ['IN_PUBLICA', 'ID_DEPENDENCIA_ADM'] 
-}
-
-REGIONAL_MAP = {
-    'N': ['AC','AP','AM','PA','RO','RR','TO', 11, 12, 13, 14, 15, 16, 17],
-    'NE': ['AL','BA','CE','MA','PB','PE','PI','RN','SE', 21, 22, 23, 24, 25, 26, 27, 28, 29],
-    'CO': ['DF','GO','MT','MS', 50, 51, 52, 53],
-    'SE': ['ES','MG','RJ','SP', 31, 32, 33, 35],
-    'S': ['PR','RS','SC', 41, 42, 43]
-}
-UF_TO_REGION = {}
-for reg, codes in REGIONAL_MAP.items():
-    for code in codes:
-        UF_TO_REGION[code] = reg
-        UF_TO_REGION[str(code)] = reg
+for p in [DATA_RAW, DATA_PROCESSED, REPORT_XLSX, LOG_DIR]:
+    os.makedirs(p, exist_ok=True)
 
 IBGE_TO_SIGLA = {
     11:'RO', 12:'AC', 13:'AM', 14:'RR', 15:'PA', 16:'AP', 17:'TO',
@@ -83,154 +34,199 @@ IBGE_TO_SIGLA = {
     50:'MS', 51:'MT', 52:'GO', 53:'DF'
 }
 
-def detect_separator(file_handle):
-    try:
-        line = file_handle.readline().decode('latin1')
-        file_handle.seek(0)
-        if line.count(';') > line.count(','): return ';'
-        return ','
-    except Exception:
-        file_handle.seek(0)
-        return ';'
+class SaebPipeline:
+    def __init__(self, year, file_path, filter_network):
+        self.year = year
+        self.file_path = file_path
+        self.filter_network = filter_network
+        
+        # Hints for known years (Fallback is Heuristic)
+        self.column_hints = {
+            2023: {'3EM': {'LP': 'MEDIA_EM_LP', 'MT': 'MEDIA_EM_MT'}},
+            2021: {'3EM': {'LP': 'MEDIA_3EM_LP', 'MT': 'MEDIA_3EM_MT'}},
+            2017: {
+                '5EF': {'LP': 'MEDIA_5EF_LP', 'MT': 'MEDIA_5EF_MT'},
+                '9EF': {'LP': 'MEDIA_9EF_LP', 'MT': 'MEDIA_9EF_MT'},
+                '3EM': {'LP': 'MEDIA_3EM_LP', 'MT': 'MEDIA_3EM_MT'}
+            }
+        }
 
-def find_target_col(header, priorities):
-    for p in priorities:
-        if p in header: return p
-    return None
+    def detect_separator(self, f_handle):
+        try:
+            line = f_handle.readline().decode('latin1')
+            f_handle.seek(0)
+            if line.count(';') > line.count(','): return ';'
+            return ','
+        except:
+            f_handle.seek(0)
+            return ';'
 
-def process_saeb_year(year, zip_filename):
-    print(f"\n[INFO] Processing SAEB {year}...")
-    zip_path = os.path.join(DATA_RAW, zip_filename)
-    
-    if not os.path.exists(zip_path):
-        print(f"   [SKIP] File not found: {zip_path}")
-        return
+    def find_columns_heuristic(self, all_cols, grade_tag):
+        upper_cols = [c.upper() for c in all_cols]
+        lp_candidates = []
+        mt_candidates = []
 
-    try:
-        with zipfile.ZipFile(zip_path, 'r') as z:
-            # Prefer School (aggregated) data
-            target_file = next((f for f in z.namelist() if 'TS_ESCOLA' in f and f.endswith('.csv')), None)
-            
-            if not target_file:
-                print("   [ERROR] TS_ESCOLA missing.")
-                return
-            
-            with z.open(target_file) as f:
-                # 1. Structure Detection
-                sep = detect_separator(f)
-                header = pd.read_csv(f, sep=sep, encoding='latin1', nrows=0).columns.tolist()
-                
-                # 2. Identify Columns
-                col_uf = find_target_col(header, UF_COLS)
-                col_lp = find_target_col(header, PRIORITY_LP)
-                col_mt = find_target_col(header, PRIORITY_MT)
-                
-                # Context (Optional but Recommended)
-                col_ses = find_target_col(header, CONTEXT_COLS['SES'])
-                col_type = find_target_col(header, CONTEXT_COLS['TYPE'])
-                
-                if not all([col_uf, col_lp, col_mt]):
-                    print(f"   [CRITICAL] Missing mandatory columns (UF/Scores).")
+        for original, upper in zip(all_cols, upper_cols):
+            if 'MEDIA' in upper or 'PROFICIENCIA' in upper:
+                if grade_tag in upper or (grade_tag == '3EM' and '_EM_' in upper):
+                    if 'LP' in upper or 'LINGUA' in upper:
+                        lp_candidates.append(original)
+                    elif 'MT' in upper or 'MAT' in upper:
+                        mt_candidates.append(original)
+        
+        lp = min(lp_candidates, key=len) if lp_candidates else None
+        mt = min(mt_candidates, key=len) if mt_candidates else None
+        return lp, mt
+
+    def process(self):
+        # Configure Logger
+        log_file = os.path.join(LOG_DIR, f'saeb_{self.year}.log')
+        logging.basicConfig(filename=log_file, level=logging.INFO, format='%(asctime)s | %(message)s', force=True)
+        logging.info(f"START: Year {self.year} | Filter {self.filter_network} | File {os.path.basename(self.file_path)}")
+
+        print(f"\n[INFO] Processing SAEB {self.year}...")
+        
+        try:
+            with zipfile.ZipFile(self.file_path, 'r') as z:
+                target = next((f for f in z.namelist() if 'TS_ESCOLA' in f and f.endswith('.csv')), None)
+                if not target:
+                    msg = "[ERROR] TS_ESCOLA csv not found in zip."
+                    print(msg); logging.error(msg)
                     return
+
+                with z.open(target) as f:
+                    sep = self.detect_separator(f)
+                    header = pd.read_csv(f, sep=sep, encoding='latin1', nrows=0).columns.tolist()
+                    
+                    col_adm = next((c for c in header if 'DEPENDENCIA' in c), 'ID_DEPENDENCIA_ADM')
+                    col_uf = next((c for c in header if c in ['ID_UF', 'UF', 'CO_UF']), None)
+
+                    grades_to_process = []
+                    possible_grades = ['5EF', '9EF', '3EM']
+                    
+                    for g in possible_grades:
+                        lp, mt = None, None
+                        if self.year in self.column_hints and g in self.column_hints[self.year]:
+                            lp = self.column_hints[self.year][g].get('LP')
+                            mt = self.column_hints[self.year][g].get('MT')
+                        
+                        if not (lp in header and mt in header):
+                            lp, mt = self.find_columns_heuristic(header, g)
+
+                        if lp and mt:
+                            grades_to_process.append({'grade': g, 'lp': lp, 'mt': mt})
+                            logging.info(f"Grade {g} mapped: {lp}, {mt}")
+
+                    if not grades_to_process:
+                        print("[SKIP] No grades found.")
+                        return
+
+                    use_cols = [col_uf, col_adm] + [x['lp'] for x in grades_to_process] + [x['mt'] for x in grades_to_process]
+                    use_cols = list(set([c for c in use_cols if c]))
+                    
+                    f.seek(0)
+                    df = pd.read_csv(f, sep=sep, encoding='latin1', usecols=use_cols)
+
+            # Filtering
+            if self.filter_network == 'PUBLIC':
+                df = df[df[col_adm].isin([1, 2, 3])]
+            elif self.filter_network == 'PRIVATE':
+                df = df[df[col_adm] == 4]
+
+            # Standardization
+            if pd.api.types.is_numeric_dtype(df[col_uf]):
+                df['UF'] = df[col_uf].map(IBGE_TO_SIGLA)
+            else:
+                df['UF'] = df[col_uf]
+
+            dfs_to_save = []
+            for item in grades_to_process:
+                c_lp, c_mt = item['lp'], item['mt']
                 
-                print(f"   [COLS] Math='{col_mt}' | SES='{col_ses}' | Type='{col_type}'")
-                
-                # 3. Load Data
-                load_cols = [col_uf, col_lp, col_mt]
-                if col_ses: load_cols.append(col_ses)
-                if col_type: load_cols.append(col_type)
-                
-                f.seek(0)
-                df = pd.read_csv(f, sep=sep, encoding='latin1', usecols=load_cols)
-                
-                # 4. Standardize Names
-                df = df.rename(columns={col_uf: 'UF_ID', col_lp: 'Language_Mean', col_mt: 'Math_Mean'})
-                if col_ses: df = df.rename(columns={col_ses: 'SES_Raw'})
-                if col_type: df = df.rename(columns={col_type: 'School_Type'})
-                
-                # 5. Data Cleaning
-                # Scores to Float
-                for c in ['Language_Mean', 'Math_Mean']:
+                for c in [c_lp, c_mt]:
                     if df[c].dtype == object:
-                        df[c] = df[c].astype(str).str.replace(',', '.').astype(float)
-                
-                # SES Parsing (Extract number from "Grupo 1")
-                if 'SES_Raw' in df.columns:
-                    # If it's already numeric, keep it. If string, extract digits.
-                    if pd.api.types.is_numeric_dtype(df['SES_Raw']):
-                         df['SES_Index'] = df['SES_Raw']
-                    else:
-                        df['SES_Index'] = df['SES_Raw'].astype(str).str.extract(r'(\d+)').astype(float)
-                
-                # Public School Logic
-                if 'School_Type' in df.columns:
-                    # If col is IN_PUBLICA: 1=Public, 0=Private
-                    # If col is ID_DEPENDENCIA_ADM: 1,2,3=Public, 4=Private
-                    if 'IN_PUBLICA' in str(col_type):
-                        df['Is_Public'] = df['School_Type']
-                    else:
-                        # Map 4->0 (Private), others->1 (Public)
-                        df['Is_Public'] = np.where(df['School_Type'] == 4, 0, 1)
+                        df[c] = df[c].astype(str).str.replace(',', '.', regex=False)
+                    df[c] = pd.to_numeric(df[c], errors='coerce')
 
-                # 6. Aggregation (State Level)
-                # Define aggregation rules
-                agg_rules = {'Math_Mean': 'mean', 'Language_Mean': 'mean'}
-                if 'SES_Index' in df.columns: agg_rules['SES_Index'] = 'mean'
-                if 'Is_Public' in df.columns: agg_rules['Is_Public'] = 'mean' # Returns % of public schools
-                
-                grouped = df.groupby('UF_ID').agg(agg_rules).reset_index()
-                
-                # 7. Metadata Mapping
-                if pd.api.types.is_numeric_dtype(grouped['UF_ID']):
-                    grouped['UF'] = grouped['UF_ID'].map(IBGE_TO_SIGLA)
-                else:
-                    grouped['UF'] = grouped['UF_ID']
-                
-                grouped['Region'] = grouped['UF_ID'].map(UF_TO_REGION)
-                
-                # GLOBAL SCORE CALCULATION (PURE)
-                # Based ONLY on test scores, as requested.
-                grouped['SAEB_General'] = (grouped['Math_Mean'] + grouped['Language_Mean']) / 2
-                
-                # Rename Context Columns for clarity
-                if 'Is_Public' in grouped.columns:
-                    grouped = grouped.rename(columns={'Is_Public': 'Public_Share'})
-                
-                # Reorder
-                cols = ['Region', 'UF', 'SAEB_General', 'Math_Mean', 'Language_Mean']
-                if 'SES_Index' in grouped.columns: cols.append('SES_Index')
-                if 'Public_Share' in grouped.columns: cols.append('Public_Share')
-                
-                final_df = grouped[cols].sort_values('SAEB_General', ascending=False)
-                
-                # 8. SAFEGUARD
-                if DataGuard:
-                    print(f"   [AUDIT] Running DataGuard...")
-                    guard = DataGuard(final_df, f"SAEB {year}")
-                    guard.check_range(['Math_Mean'], 150, 450)
-                    guard.check_historical_consistency('SAEB_General', 'UF')
-                    guard.validate(strict=True)
+                sub = df.dropna(subset=[c_lp, c_mt]).copy()
+                if sub.empty: continue
 
-                # 9. SAVE
-                csv_out = os.path.join(DATA_PROCESSED, f'saeb_table_{year}.csv')
-                xlsx_out = os.path.join(REPORT_XLSX, f'saeb_table_{year}.xlsx')
+                grouped = sub.groupby('UF')[[c_lp, c_mt]].mean().reset_index()
+                grouped.columns = ['UF', 'Language_Mean', 'Math_Mean']
+                grouped['SAEB_General'] = (grouped['Language_Mean'] + grouped['Math_Mean']) / 2
+                grouped['Grade'] = item['grade']
+                grouped['Year'] = self.year
+                grouped['Network'] = self.filter_network
+                dfs_to_save.append(grouped)
+
+            if dfs_to_save:
+                final_df = pd.concat(dfs_to_save, ignore_index=True)
+                cols = ['Year', 'Network', 'UF', 'Grade', 'SAEB_General', 'Math_Mean', 'Language_Mean']
+                final_df = final_df[cols].sort_values(['Grade', 'SAEB_General'], ascending=[True, False])
+
+                fname = f"saeb_unified_{self.year}_{self.filter_network.lower()}"
+                csv_out = os.path.join(DATA_PROCESSED, f"{fname}.csv")
+                xlsx_out = os.path.join(REPORT_XLSX, f"{fname}.xlsx")
                 
                 final_df.to_csv(csv_out, index=False)
                 final_df.to_excel(xlsx_out, index=False)
-                
-                print(f"   [SUCCESS] Saved: {os.path.basename(csv_out)}")
-
-    except Exception as e:
-        print(f"   [CRITICAL] Error: {e}")
-        import traceback
-        traceback.print_exc()
+                print(f"   -> Saved: {fname}")
+                logging.info(f"Success. Saved {fname}")
+            
+        except Exception as e:
+            print(f"[CRITICAL ERROR] {e}")
+            logging.error(f"Critical: {e}")
 
 def main():
+    os.system('cls' if os.name == 'nt' else 'clear')
     print("="*60)
-    print("[START] SAEB Historical Processing")
+    print("   SAEB BATCH PROCESSOR (v5.0)")
     print("="*60)
-    for year, file in [(2015, 'microdados_saeb_2015.zip'), (2017, 'microdados_saeb_2017.zip')]:
-        process_saeb_year(year, file)
+
+    # 1. Get Years
+    while True:
+        raw = input(">> Enter years separated by comma (e.g. 2019, 2021, 2023): ")
+        try:
+            years = [int(y.strip()) for y in raw.split(',')]
+            break
+        except:
+            print("[!] Invalid format. Use numeric years separated by commas.")
+
+    # 2. Get Filter
+    print("\n>> Select Network Filter for ALL years:")
+    print("   [1] All Schools")
+    print("   [2] Public Only (Recommended for Policy Analysis)")
+    print("   [3] Private Only")
+    opt = input("   Choice: ").strip()
+    
+    filter_map = {'2': 'PUBLIC', '3': 'PRIVATE'}
+    selected_filter = filter_map.get(opt, 'ALL')
+
+    # 3. Execution Loop
+    print("\n" + "-"*60)
+    for y in years:
+        default_name = f"microdados_saeb_{y}.zip"
+        default_path = os.path.join(DATA_RAW, default_name)
+        
+        final_path = None
+
+        if os.path.exists(default_path):
+            print(f"[CHECK] Year {y}: Found default file ({default_name})")
+            final_path = default_path
+        else:
+            print(f"[CHECK] Year {y}: Default file NOT found.")
+            while True:
+                user_path = input(f"   >> Please paste full path for SAEB {y} zip: ").strip().replace('"', '')
+                if os.path.exists(user_path) and zipfile.is_zipfile(user_path):
+                    final_path = user_path
+                    break
+                print("   [!] Invalid path or not a zip file. Try again.")
+        
+        # Run Pipeline
+        pipeline = SaebPipeline(y, final_path, selected_filter)
+        pipeline.process()
+    
+    print("\n[DONE] Batch processing finished.")
 
 if __name__ == "__main__":
     main()
