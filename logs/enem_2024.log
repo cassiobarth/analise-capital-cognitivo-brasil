@@ -1,0 +1,12 @@
+2026-01-10 16:03:03,439 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
+2026-01-10 16:03:03,472 | ERROR | Usecols do not match columns, columns expected but not found: ['TP_ST_CONCLUSAO', 'TP_ESCOLA']
+2026-01-10 16:14:36,710 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
+2026-01-10 16:17:35,955 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
+2026-01-10 16:19:15,797 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
+2026-01-10 16:19:35,418 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
+2026-01-10 16:19:52,684 | INFO | SUCCESS. Saved enem_table_2024_ALL
+2026-01-10 16:23:48,630 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
+2026-01-10 16:24:09,339 | INFO | SUCCESS. Saved enem_table_2024_3EM_PROXY
+2026-01-10 16:25:44,821 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
+2026-01-10 16:25:44,842 | INFO | METHODOLOGY: Proxy 3EM Filter (Active School ID)
+2026-01-10 16:26:05,592 | INFO | SUCCESS. Saved enem_table_2024_3EM_PROXY

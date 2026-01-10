@@ -1,16 +1,18 @@
 """
 PROJECT:     Cognitive Capital Analysis - Brazil
 SCRIPT:      src/cog/enem_unified_pipeline.py
+SOURCE:      INEP (https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/enem)
 ROLE:        Senior Data Science Advisor
-DATE:        2026-01-10 (v2.0 - 3EM Focus)
+DATE:        2026-01-10 (v3.1 - Adaptive 2024 Fix)
 
 CHANGELOG:
-    - v2.0: Adds strict filtering for 'Concluintes' (High School Seniors).
-            This creates the "ENEM 3EM" dataset comparable to SAEB 3EM.
+    - v3.1: Added fallback for missing 'TP_ST_CONCLUSAO' (skips 3EM filter if needed).
+            Added support for 'TP_DEPENDENCIA_ADM_ESC' to calculate Public/Private.
+    - v3.0: Robust header reading.
 
 DESCRIPTION:
-    Unified pipeline to process ENEM Microdata (2015-2024+).
-    Filters for TP_ST_CONCLUSAO == 2 (Graduating this year) to proxy 3rd Year HS.
+    Unified pipeline to process ENEM Microdata.
+    Attempts to filter for 3EM, but gracefully degrades to 'All Data' if status column is missing.
 """
 
 import pandas as pd
@@ -54,13 +56,17 @@ LOG_DIR = os.path.join(BASE_PATH, 'logs')
 for p in [DATA_RAW, DATA_PROCESSED, REPORT_XLSX, LOG_DIR]:
     os.makedirs(p, exist_ok=True)
 
-# --- MAPPINGS ---
-SCORE_MAP = {
-    'NU_NOTA_CN': 'Natural_Sciences',
-    'NU_NOTA_CH': 'Humanities',
-    'NU_NOTA_LC': 'Language',
-    'NU_NOTA_MT': 'Math',
-    'NU_NOTA_REDACAO': 'Essay'
+# --- STANDARD TARGET NAMES ---
+TARGET_COLS = {
+    'UF': ['SG_UF_PROVA', 'UF_PROVA', 'SG_UF_ESC'], # Added SG_UF_ESC as fallback
+    'SCHOOL_TYPE': ['TP_ESCOLA'], 
+    'SCHOOL_DEP': ['TP_DEPENDENCIA_ADM_ESC'], # New fallback for 2024
+    'STATUS': ['TP_ST_CONCLUSAO'],
+    'Natural_Sciences': ['NU_NOTA_CN'],
+    'Humanities': ['NU_NOTA_CH'],
+    'Language': ['NU_NOTA_LC'],
+    'Math': ['NU_NOTA_MT'],
+    'Essay': ['NU_NOTA_REDACAO']
 }
 
 UF_REGION_MAP = {
@@ -90,8 +96,16 @@ class EnemPipeline:
         if not csv_files: return None
         return sorted(csv_files, key=lambda x: z.getinfo(x).file_size, reverse=True)[0]
 
+    def find_col_flexible(self, header, candidates):
+        """Helper to find column names case-insensitively."""
+        header_upper = {h.upper(): h for h in header}
+        for cand in candidates:
+            if cand.upper() in header_upper:
+                return header_upper[cand.upper()]
+        return None
+
     def process(self):
-        print(f"\n[INFO] Processing ENEM {self.year} (Target: 3EM Students)...")
+        print(f"\n[INFO] Processing ENEM {self.year}...")
         self.logger.info(f"START ENEM {self.year} | File: {self.file_path}")
         
         try:
@@ -100,54 +114,101 @@ class EnemPipeline:
                 if not target_filename:
                     print(f"   [ERROR] No CSV found."); return
 
-                # TP_ST_CONCLUSAO: 1=Done, 2=Graduating This Year (3EM), 3=Future(Treineiro), 4=Quit
-                cols_to_load = ['SG_UF_PROVA', 'TP_ESCOLA', 'TP_ST_CONCLUSAO'] + list(SCORE_MAP.keys())
-                chunk_size = 250000 
-                agg_storage = [] 
-                
                 with z.open(target_filename) as f:
+                    # 1. Detect Separator & Read Header
                     first_line = f.readline().decode('latin-1')
                     sep = ';' if first_line.count(';') > first_line.count(',') else ','
                     f.seek(0)
+                    
+                    header = pd.read_csv(f, sep=sep, encoding='latin-1', nrows=0).columns.tolist()
+                    if len(header) < 2:
+                        sep = ',' if sep == ';' else ';'
+                        f.seek(0)
+                        header = pd.read_csv(f, sep=sep, encoding='latin-1', nrows=0).columns.tolist()
+                    
+                    print(f"   [DEBUG] Headers found (Top 5): {header[:5]}")
 
+                    # 2. Map Actual Columns to Target Columns
+                    col_map = {} 
+                    missing_critical = []
+                    
+                    for internal_name, candidates in TARGET_COLS.items():
+                        found = self.find_col_flexible(header, candidates)
+                        if found:
+                            col_map[found] = internal_name
+                        else:
+                            # Strict check only for UF. Others are adaptable.
+                            if internal_name in ['UF']:
+                                missing_critical.append(internal_name)
+                    
+                    if missing_critical:
+                        print(f"   [CRITICAL ERROR] Missing mandatory columns: {missing_critical}")
+                        return
+
+                    # 3. Process Data
+                    cols_to_load = list(col_map.keys())
+                    chunk_size = 250000 
+                    agg_storage = [] 
+                    
+                    f.seek(0)
                     reader = pd.read_csv(f, sep=sep, encoding='latin-1', usecols=cols_to_load, chunksize=chunk_size)
                     
                     batch_idx = 0
                     total_rows = 0
                     filtered_rows = 0
+                    has_status_col = 'STATUS' in col_map.values()
+                    
+                    if not has_status_col:
+                        print("   [WARN] 'TP_ST_CONCLUSAO' not found. 3EM Filter DISABLED (Processing ALL).")
 
                     for chunk in reader:
                         batch_idx += 1
                         total_rows += len(chunk)
                         
-                        # --- FILTER: ONLY 3EM (CONCLUINTES) ---
-                        # TP_ST_CONCLUSAO == 2
-                        chunk = chunk[chunk['TP_ST_CONCLUSAO'] == 2].copy()
-                        filtered_rows += len(chunk)
+                        # Rename to Standard Internal Names
+                        chunk = chunk.rename(columns=col_map)
                         
+                        # --- FILTER: ONLY 3EM (If column exists) ---
+                        if has_status_col:
+                            chunk = chunk[chunk['STATUS'] == 2].copy()
+                        
+                        filtered_rows += len(chunk)
                         if chunk.empty: continue
 
                         if batch_idx % 10 == 0:
-                            print(f"   ... Processed {total_rows/1e6:.1f}M rows (Kept {filtered_rows/1e6:.1f}M 3EM)", end='\r')
+                            print(f"   ... Processed {total_rows/1e6:.1f}M rows (Active: {filtered_rows/1e6:.1f}M)", end='\r')
 
-                        # 1. Standardize
-                        chunk = chunk.rename(columns={'SG_UF_PROVA': 'UF'})
-                        chunk = chunk.rename(columns=SCORE_MAP)
-                        score_cols = list(SCORE_MAP.values())
-
-                        # 2. Clean Zeros
-                        chunk[score_cols] = chunk[score_cols].replace(0, np.nan)
+                        # 4. Clean Scores (0 -> NaN)
+                        score_cols = ['Natural_Sciences', 'Humanities', 'Language', 'Math', 'Essay']
+                        present_scores = [c for c in score_cols if c in chunk.columns]
                         
-                        # 3. Row Metrics
-                        chunk['Mean_General'] = chunk[score_cols].mean(axis=1)
-                        target_cols = score_cols + ['Mean_General']
+                        if present_scores:
+                            chunk[present_scores] = chunk[present_scores].replace(0, np.nan)
+                            chunk['Mean_General'] = chunk[present_scores].mean(axis=1)
+                        else:
+                            chunk['Mean_General'] = np.nan
 
-                        # 4. Public/Private Map
-                        conditions = [chunk['TP_ESCOLA'].isin([2]), chunk['TP_ESCOLA'].isin([3])]
-                        choices = [1, 0] # 1=Public, 0=Private
-                        chunk['Is_Public'] = np.select(conditions, choices, default=np.nan)
+                        target_cols = present_scores + ['Mean_General']
 
-                        # 5. Aggregation
+                        # 5. Public/Private Map (Hybrid Logic)
+                        # Option A: Standard SCHOOL_TYPE (TP_ESCOLA) -> 2=Pub, 3=Priv
+                        if 'SCHOOL_TYPE' in chunk.columns:
+                            conditions = [chunk['SCHOOL_TYPE'].isin([2]), chunk['SCHOOL_TYPE'].isin([3])]
+                            choices = [1, 0] 
+                            chunk['Is_Public'] = np.select(conditions, choices, default=np.nan)
+                        
+                        # Option B: Dependency SCHOOL_DEP (TP_DEPENDENCIA_ADM_ESC) -> 1,2,3=Pub, 4=Priv
+                        elif 'SCHOOL_DEP' in chunk.columns:
+                             # 1=Federal, 2=Estadual, 3=Municipal -> PUBLIC (1)
+                             # 4=Privada -> PRIVATE (0)
+                            conditions = [chunk['SCHOOL_DEP'].isin([1, 2, 3]), chunk['SCHOOL_DEP'] == 4]
+                            choices = [1, 0]
+                            chunk['Is_Public'] = np.select(conditions, choices, default=np.nan)
+                            
+                        else:
+                            chunk['Is_Public'] = np.nan
+
+                        # 6. Aggregation
                         sq_cols = chunk[target_cols].pow(2)
                         sq_cols.columns = [f"{c}_sq" for c in target_cols]
                         chunk_sq = pd.concat([chunk[['UF']], sq_cols], axis=1)
@@ -162,13 +223,16 @@ class EnemPipeline:
 
             # --- CONSOLIDATION ---
             if not agg_storage:
-                print("\n   [WARN] No 3EM students found (check filter TP_ST_CONCLUSAO).")
+                print("\n   [WARN] No data found.")
                 return
 
-            print(f"\n   [INFO] Consolidating metrics for 3EM students...")
+            print(f"\n   [INFO] Consolidating metrics...")
             full_agg = pd.concat(agg_storage).groupby(level=0).sum()
             final_df = pd.DataFrame(index=full_agg.index)
-            target_cols = list(SCORE_MAP.values()) + ['Mean_General']
+            
+            # Recalculate
+            present_scores = [c for c in ['Natural_Sciences', 'Humanities', 'Language', 'Math', 'Essay'] if (c, 'sum') in full_agg.columns]
+            target_cols = present_scores + ['Mean_General']
             
             for col in target_cols:
                 sum_val = full_agg[(col, 'sum')]
@@ -176,26 +240,30 @@ class EnemPipeline:
                 sum_sq_val = full_agg[f"{col}_sq"]
                 
                 final_df[col] = sum_val / count_val
-                # StdDev
                 variance = (sum_sq_val / count_val) - (final_df[col] ** 2)
-                final_df[f"{col}_std"] = np.sqrt(variance.clip(lower=0)) # Clip handles float precision errs
+                final_df[f"{col}_std"] = np.sqrt(variance.clip(lower=0)) 
 
             # Network Stats
             final_df['Public_Share'] = full_agg['Public_Sum'] / full_agg['Network_Valid_Count']
-            total_students = full_agg[('Essay', 'count')]
-            final_df['Network_Data_Coverage'] = full_agg['Network_Valid_Count'] / total_students
             
-            # --- SAVING (With 3EM Tag) ---
+            if 'Essay' in present_scores:
+                total_students = full_agg[('Essay', 'count')]
+                final_df['Network_Data_Coverage'] = full_agg['Network_Valid_Count'] / total_students
+            else:
+                final_df['Network_Data_Coverage'] = np.nan
+            
+            # --- SAVING ---
             final_df = final_df.reset_index()
             final_df['Region'] = final_df['UF'].map(UF_REGION_MAP)
             final_df['Year'] = str(self.year)
-            final_df['Grade'] = '3EM' # Explicit Tag
+            
+            # Tag adjustment: if filtering was possible, mark as 3EM, else ALL
+            final_df['Grade'] = '3EM' if has_status_col else 'ALL'
 
-            main_cols = ['Year', 'Region', 'UF', 'Grade', 'Mean_General', 'Mean_General_std', 'Public_Share', 'Network_Data_Coverage']
-            score_cols = [c for c in final_df.columns if c in list(SCORE_MAP.values())]
-            final_df = final_df[main_cols + score_cols].sort_values('Mean_General', ascending=False)
+            cols = ['Year', 'Region', 'UF', 'Grade', 'Mean_General', 'Mean_General_std', 'Public_Share', 'Network_Data_Coverage'] + present_scores
+            final_df = final_df[[c for c in cols if c in final_df.columns]].sort_values('Mean_General', ascending=False)
 
-            fname = f"enem_table_{self.year}_3EM"
+            fname = f"enem_table_{self.year}_{final_df['Grade'].iloc[0]}"
             csv_path = os.path.join(DATA_PROCESSED, f"{fname}.csv")
             xlsx_path = os.path.join(REPORT_XLSX, f"{fname}.xlsx")
             
@@ -213,14 +281,13 @@ class EnemPipeline:
 
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
-    print("=== ENEM UNIFIED PIPELINE v2.0 (3EM Only) ===")
+    print("=== ENEM UNIFIED PIPELINE v3.1 (Adaptive 2024) ===")
     
-    # 1. Years
-    raw = input_timeout(">> Years (e.g. 2018, 2023)", timeout=5, default="2015, 2018, 2022, 2023")
+    raw = input_timeout(">> Years (e.g. 2024)", timeout=5, default="2015, 2018, 2022, 2023, 2024")
     try:
         years = [int(y.strip()) for y in raw.split(',')]
     except:
-        years = [2015, 2018, 2022, 2023]
+        years = [2015, 2018, 2022, 2023, 2024]
 
     print(f"\n[QUEUE] Processing: {years}")
     print("-" * 50)

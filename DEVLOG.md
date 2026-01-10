@@ -87,3 +87,19 @@
 2.  Validate the consistency of historical data merges.
 3.  Draft qualitative analysis based on the generated longitudinal charts.
 4.  Investigate socioeconomic factors (if data becomes available) that explain the divergence of the South Region.
+
+
+## 2026-01-10 | v4.0.0 | SAEB Pipeline Unification
+
+### Architecture Refactoring
+- **Script Unification**: Replaced src/cog/01_process_saeb_historical.py and src/cog/01_process_saeb_2023.py with a single modular pipeline: src/cog/saeb_unified_pipeline.py.
+- **Rule Abstraction**: Implemented SaebPipeline class to manage variable dictionary differences across years (2015-2023).
+
+### New Features
+- **Heuristic Column Detection**: System now dynamically searches for text patterns (e.g., LP, MT, MEDIA, 5EF) if static mapping fails, ensuring resilience to future INEP layout changes.
+- **Network Filter**: Added interactive CLI option to process Public (1, 2, 3) and Private (4) schools separately, enabling educational gap comparative analysis.
+- **Logging System**: Implemented automatic recording in logs/saeb_{YEAR}.log for traceability of execution parameters and processed files.
+
+### Fixes and Improvements
+- **Separator Handling**: Automatic statistical detection of CSV delimiters (; vs ,).
+- **Data Cleaning**: Forced normalization of decimal separators and removal of null records in proficiency variables.
