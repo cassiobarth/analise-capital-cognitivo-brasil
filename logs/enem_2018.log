@@ -4,3 +4,12 @@
 2026-01-10 16:02:29,594 | INFO | SUCCESS. Saved enem_table_2018_3EM
 2026-01-10 16:13:29,549 | INFO | START ENEM 2018 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2018.zip
 2026-01-10 16:13:59,009 | INFO | SUCCESS. Saved enem_table_2018_3EM
+2026-01-15 23:25:07,519 | INFO | Pipeline started for Year 2018. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\Enem\microdados_enem_2018.zip
+2026-01-15 23:25:07,567 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)
+2026-01-15 23:25:07,575 | ERROR | Usecols do not match columns, columns expected but not found: ['NU_NOTA_REDACAO', 'NU_NOTA_MT', 'TP_LINGUA', 'SG_UF_PROVA', 'TP_ST_CONCLUSAO', 'NU_NOTA_CN', 'NU_NOTA_LC', 'NU_NOTA_CH']
+2026-01-15 23:30:29,095 | INFO | Pipeline started for Year 2018. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\enem\microdados_enem_2018.zip
+2026-01-15 23:30:29,116 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)
+2026-01-15 23:43:38,168 | INFO | Pipeline started for Year 2018. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\enem\microdados_enem_2018.zip
+2026-01-15 23:43:38,193 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)
+2026-01-15 23:47:54,556 | INFO | Pipeline started for Year 2018. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\enem\microdados_enem_2018.zip
+2026-01-15 23:47:54,566 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)

@@ -44,7 +44,7 @@ except ImportError:
 
 # --- GLOBAL CONFIG ---
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DATA_RAW = os.path.join(BASE_PATH, 'data', 'raw')
+DATA_RAW = os.path.join(BASE_PATH, 'data', 'raw', 'saeb')
 DATA_PROCESSED = os.path.join(BASE_PATH, 'data', 'processed')
 REPORT_XLSX = os.path.join(BASE_PATH, 'reports', 'varcog', 'xlsx')
 LOG_DIR = os.path.join(BASE_PATH, 'logs')

@@ -4,3 +4,12 @@
 2026-01-10 16:02:45,491 | INFO | SUCCESS. Saved enem_table_2022_3EM
 2026-01-10 16:13:59,011 | INFO | START ENEM 2022 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2022.zip
 2026-01-10 16:14:17,944 | INFO | SUCCESS. Saved enem_table_2022_3EM
+2026-01-15 23:25:07,582 | INFO | Pipeline started for Year 2022. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\Enem\microdados_enem_2022.zip
+2026-01-15 23:25:07,618 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)
+2026-01-15 23:25:07,628 | ERROR | Usecols do not match columns, columns expected but not found: ['NU_NOTA_REDACAO', 'NU_NOTA_MT', 'TP_LINGUA', 'SG_UF_PROVA', 'TP_ST_CONCLUSAO', 'NU_NOTA_CN', 'NU_NOTA_LC', 'NU_NOTA_CH']
+2026-01-15 23:30:57,906 | INFO | Pipeline started for Year 2022. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\enem\microdados_enem_2022.zip
+2026-01-15 23:30:57,927 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)
+2026-01-15 23:44:02,823 | INFO | Pipeline started for Year 2022. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\enem\microdados_enem_2022.zip
+2026-01-15 23:44:02,851 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)
+2026-01-15 23:48:20,570 | INFO | Pipeline started for Year 2022. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\enem\microdados_enem_2022.zip
+2026-01-15 23:48:20,585 | INFO | Methodology: STRICT (TP_ST_CONCLUSAO == 2)

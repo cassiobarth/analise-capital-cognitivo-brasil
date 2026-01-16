@@ -10,3 +10,5 @@
 2026-01-10 16:25:44,821 | INFO | START ENEM 2024 | File: B:\descargas\analise-capital-cognitivo-brasil\data\raw\microdados_enem_2024.zip
 2026-01-10 16:25:44,842 | INFO | METHODOLOGY: Proxy 3EM Filter (Active School ID)
 2026-01-10 16:26:05,592 | INFO | SUCCESS. Saved enem_table_2024_3EM_PROXY
+2026-01-16 08:17:32,650 | INFO | Pipeline started for Year 2024. Source: B:\descargas\analise-capital-cognitivo-brasil\data\raw\enem\microdados_enem_2024.zip
+2026-01-16 08:17:32,687 | INFO | Methodology: PROXY (Active School ID Link)
